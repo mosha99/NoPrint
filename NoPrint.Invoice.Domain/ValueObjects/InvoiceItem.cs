@@ -1,6 +1,6 @@
 ﻿using NoPrint.Framework.Validation;
 
-namespace NoPrint.Invoice.Domain.Models;
+namespace NoPrint.Invoices.Domain.ValueObjects;
 
 public class InvoiceItem
 {
@@ -8,14 +8,14 @@ public class InvoiceItem
 
     public static InvoiceItem CreateInstance(string productName, string productCode, decimal count, decimal price, decimal rawFee, decimal discountRate, decimal discountFee, decimal finalFee)
     {
-        productName.ValidationCheck(nameof(InvoiceItem.ProductName), x => !string.IsNullOrWhiteSpace(x), "E1001");
-        productCode.ValidationCheck(nameof(InvoiceItem.ProductCode), x => !string.IsNullOrWhiteSpace(x), "E1002");
-        count.ValidationCheck(nameof(InvoiceItem.Count), x => x > 0, "E1003");
-        price.ValidationCheck(nameof(InvoiceItem.Price), x => x > 0, "E1004");
-        rawFee.ValidationCheck(nameof(InvoiceItem.RawFee), x => x > 0 && x == count * price, "E1005");
-        discountRate.ValidationCheck(nameof(InvoiceItem.DiscountRate), x => x >= 0, "E1006");
-        discountFee.ValidationCheck(nameof(InvoiceItem.DiscountFee), x => x >= 0 && x == rawFee * discountRate, "E1007");
-        finalFee.ValidationCheck(nameof(InvoiceItem.FinalFee), x => x == rawFee - discountFee, "E1008");
+        productName.ValidationCheck(nameof(ProductName), x => !string.IsNullOrWhiteSpace(x), "E1001");
+        productCode.ValidationCheck(nameof(ProductCode), x => !string.IsNullOrWhiteSpace(x), "E1002");
+        count.ValidationCheck(nameof(Count), x => x > 0, "E1003");
+        price.ValidationCheck(nameof(Price), x => x > 0, "E1004");
+        rawFee.ValidationCheck(nameof(RawFee), x => x > 0 && x == count * price, "E1005");
+        discountRate.ValidationCheck(nameof(DiscountRate), x => x >= 0, "E1006");
+        discountFee.ValidationCheck(nameof(DiscountFee), x => x >= 0 && x == rawFee * discountRate, "E1007");
+        finalFee.ValidationCheck(nameof(FinalFee), x => x == rawFee - discountFee, "E1008");
 
         return new InvoiceItem()
         {

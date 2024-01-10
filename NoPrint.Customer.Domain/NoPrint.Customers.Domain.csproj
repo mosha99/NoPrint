@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NoPrint.Framework\NoPrint.Framework.csproj" />
+    <ProjectReference Include="..\Noprint.Identity.Share\Noprint.Identity.Share.csproj" />
+  </ItemGroup>
+
 </Project>

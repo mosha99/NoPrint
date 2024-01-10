@@ -1,7 +1,10 @@
-﻿namespace NoPrint.Framework.Validation;
+﻿using System.Text.Json;
 
-public class PropertyError
+namespace NoPrint.Framework.Validation;
+
+public class PropertyError : LogicalError
 {
     public string PropTitle { get; set; }
-    public List<string> Errors { get; set; }
+    public override string ToJson() => JsonSerializer.Serialize(this);
+
 }

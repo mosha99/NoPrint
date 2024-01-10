@@ -3,17 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34321.82
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Shop.Domain", "NoPrint.Shop.Domein\NoPrint.Shop.Domain.csproj", "{E39D5E3A-CC40-40C8-8644-64BF4CC2E9FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Shops.Domain", "NoPrint.Shop.Domein\NoPrint.Shops.Domain.csproj", "{E39D5E3A-CC40-40C8-8644-64BF4CC2E9FB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Invoice.Domain", "NoPrint.Invoice.Domain\NoPrint.Invoice.Domain.csproj", "{2DD7EF5C-CD31-4DD5-A47B-706122AFA728}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Invoices.Domain", "NoPrint.Invoice.Domain\NoPrint.Invoices.Domain.csproj", "{2DD7EF5C-CD31-4DD5-A47B-706122AFA728}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Framework", "NoPrint.Framework\NoPrint.Framework.csproj", "{8DC287E9-085C-48CD-BE7A-F457EEE8B309}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Customer.Domain", "NoPrint.Customer.Domain\NoPrint.Customer.Domain.csproj", "{7EF4CC86-65B0-4B01-8DB3-2759DC16E04E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Customers.Domain", "NoPrint.Customer.Domain\NoPrint.Customers.Domain.csproj", "{7EF4CC86-65B0-4B01-8DB3-2759DC16E04E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Users.Share", "NoPrint.Users.Share\NoPrint.Users.Share.csproj", "{AAA15F1E-D87A-4381-8E39-6BD0E377C02C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Ef", "NoPrint.Ef\NoPrint.Ef.csproj", "{24E52A38-D57E-4479-9AD8-828D9AE3648A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoPrint.Users.Domain", "NoPrint.Users.Domain\NoPrint.Users.Domain.csproj", "{31B9CD9B-C409-4C94-96B0-AD259208559F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Noprint.Identity.Share", "Noprint.Identity.Share\Noprint.Identity.Share.csproj", "{277F53B1-38E8-4F0F-AD64-520D2D6039F4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Users.Domain", "NoPrint.Users.Domain\NoPrint.Users.Domain.csproj", "{D3AF9391-345A-42DA-AEE9-083D48CBD19F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{F5D40B6F-835A-47CB-BC18-5C98BB2D3528}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{7C73183F-46D2-4E8C-BD56-DBF6591A39C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{A5C4C3A9-D48E-42CF-A56C-2087BEFF45F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoPrint.Api", "NoPrint.Api\NoPrint.Api.csproj", "{47F6D932-D3B5-4F78-802F-11917BAFE2D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,17 +47,35 @@ Global
 		{7EF4CC86-65B0-4B01-8DB3-2759DC16E04E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EF4CC86-65B0-4B01-8DB3-2759DC16E04E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EF4CC86-65B0-4B01-8DB3-2759DC16E04E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AAA15F1E-D87A-4381-8E39-6BD0E377C02C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AAA15F1E-D87A-4381-8E39-6BD0E377C02C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AAA15F1E-D87A-4381-8E39-6BD0E377C02C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AAA15F1E-D87A-4381-8E39-6BD0E377C02C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{31B9CD9B-C409-4C94-96B0-AD259208559F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31B9CD9B-C409-4C94-96B0-AD259208559F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31B9CD9B-C409-4C94-96B0-AD259208559F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31B9CD9B-C409-4C94-96B0-AD259208559F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24E52A38-D57E-4479-9AD8-828D9AE3648A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24E52A38-D57E-4479-9AD8-828D9AE3648A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24E52A38-D57E-4479-9AD8-828D9AE3648A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24E52A38-D57E-4479-9AD8-828D9AE3648A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{277F53B1-38E8-4F0F-AD64-520D2D6039F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{277F53B1-38E8-4F0F-AD64-520D2D6039F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{277F53B1-38E8-4F0F-AD64-520D2D6039F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{277F53B1-38E8-4F0F-AD64-520D2D6039F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3AF9391-345A-42DA-AEE9-083D48CBD19F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3AF9391-345A-42DA-AEE9-083D48CBD19F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3AF9391-345A-42DA-AEE9-083D48CBD19F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3AF9391-345A-42DA-AEE9-083D48CBD19F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47F6D932-D3B5-4F78-802F-11917BAFE2D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47F6D932-D3B5-4F78-802F-11917BAFE2D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47F6D932-D3B5-4F78-802F-11917BAFE2D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47F6D932-D3B5-4F78-802F-11917BAFE2D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E39D5E3A-CC40-40C8-8644-64BF4CC2E9FB} = {F5D40B6F-835A-47CB-BC18-5C98BB2D3528}
+		{2DD7EF5C-CD31-4DD5-A47B-706122AFA728} = {F5D40B6F-835A-47CB-BC18-5C98BB2D3528}
+		{8DC287E9-085C-48CD-BE7A-F457EEE8B309} = {F5D40B6F-835A-47CB-BC18-5C98BB2D3528}
+		{7EF4CC86-65B0-4B01-8DB3-2759DC16E04E} = {F5D40B6F-835A-47CB-BC18-5C98BB2D3528}
+		{24E52A38-D57E-4479-9AD8-828D9AE3648A} = {7C73183F-46D2-4E8C-BD56-DBF6591A39C1}
+		{277F53B1-38E8-4F0F-AD64-520D2D6039F4} = {F5D40B6F-835A-47CB-BC18-5C98BB2D3528}
+		{D3AF9391-345A-42DA-AEE9-083D48CBD19F} = {F5D40B6F-835A-47CB-BC18-5C98BB2D3528}
+		{47F6D932-D3B5-4F78-802F-11917BAFE2D3} = {A5C4C3A9-D48E-42CF-A56C-2087BEFF45F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {15BA3B4A-580A-4115-9145-088FEB9D080C}

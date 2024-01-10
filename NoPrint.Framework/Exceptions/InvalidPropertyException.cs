@@ -16,12 +16,11 @@ public class InvalidPropertyException : Exception
     }
     public InvalidPropertyException(params string[] errors)
     {
-        Error = new PropertyError()
+        Error = new LogicalError()
         {
             Errors = errors.ToList(),
-            PropTitle = "*"
         };
     }
 
-    public PropertyError Error { get; private set; }
+    public LogicalError Error { get; private set; }
 }

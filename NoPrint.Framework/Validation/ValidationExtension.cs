@@ -8,4 +8,8 @@ public static class ValidationExtension
     {
         if (!validation(value)) throw new InvalidPropertyException(name, errors);
     }
+    public static void ValidationCheck<T>(this T value, Func<T,bool> validation , params string[] errors)
+    {
+        if (!validation(value)) throw new InvalidPropertyException(errors);
+    }
 }

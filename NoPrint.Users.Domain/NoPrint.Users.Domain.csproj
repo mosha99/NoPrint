@@ -7,13 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Repository\" />
-    <Folder Include="Models\" />
+    <ProjectReference Include="..\NoPrint.Framework\NoPrint.Framework.csproj" />
+    <ProjectReference Include="..\Noprint.Identity.Share\Noprint.Identity.Share.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NoPrint.Users.Share\NoPrint.Users.Share.csproj" />
+    <Folder Include="Repository\" />
   </ItemGroup>
 
 </Project>

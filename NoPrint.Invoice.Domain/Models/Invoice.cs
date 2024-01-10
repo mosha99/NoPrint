@@ -1,19 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using NoPrint.Framework.Exceptions;
-using NoPrint.Framework.Specification;
-using NoPrint.Framework.Validation;
-using NoPrint.Invoice.Domain.Specification;
+﻿using NoPrint.Framework.Validation;
+using System.ComponentModel.DataAnnotations.Schema;
+using NoPrint.Framework;
+using Noprint.Identity.Share;
+using NoPrint.Invoices.Domain.ValueObjects;
 
-namespace NoPrint.Invoice.Domain.Models;
+namespace NoPrint.Invoices.Domain.Models;
 
-public class Invoices
+public class Invoice : Aggregate<InvoicesId>
 {
-    private Invoices() { }
+    private Invoice() { }
 
     public long InvoiceId { get; private set; }
-    public long ShopId { get; private set; }
-    public string CustomerNumber { get; private set; }
+    public ShopId Shop { get; private set; }
+    public CustomerId Customer { get; private set; }
     private List<InvoiceItem> Items { get; set; }
+    [NotMapped]
     public IReadOnlyList<InvoiceItem> InvoiceItems => Items.AsReadOnly();
     public decimal RawCost { get; private set; }
     public decimal DiscountRate { get; private set; }
@@ -30,18 +31,20 @@ public class Invoices
         Items = items;
     }
 
-    public static Invoices Create(string customerNumber, decimal rawCost, decimal discountRate, decimal discountFee, decimal finalCost, List<InvoiceItem> invoiceItems)
+    public static Invoice Create(CustomerId customerId,ShopId shopId, decimal rawCost, decimal discountRate, decimal discountFee, decimal finalCost, List<InvoiceItem> invoiceItems)
     {
-        customerNumber.ValidationCheck(nameof(CustomerNumber), x => x.Length == 11 && x.StartsWith('0'), "E1011");
+        shopId.ValidationCheck(nameof(Shop), x => x.Id != 0 , "E1023");
+        customerId.ValidationCheck(nameof(Customer), x => x.Id != 0 , "E1011");
         rawCost.ValidationCheck(nameof(RawCost), x=> x > 0, "E1020");
         discountRate.ValidationCheck(nameof(DiscountRate), x => x is >= 0 and <= 100 && x * rawCost == discountFee , "E1015");
         discountFee.ValidationCheck(nameof(DiscountFee), x=> x > 0, "E1021");
         finalCost.ValidationCheck(nameof(FinalCost), x=> x > 0 && x == rawCost -  discountFee, "E1022");
 
         
-        var invoice = new Invoices()
+        var invoice = new Invoice()
         {
-            CustomerNumber = customerNumber,
+            Customer = customerId,
+            Shop = shopId,
             RawCost = rawCost,
             DiscountRate = discountRate,
             DiscountFee = discountFee,
