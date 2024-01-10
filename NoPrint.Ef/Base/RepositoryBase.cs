@@ -5,7 +5,7 @@ using NoPrint.Framework.Identity;
 using NoPrint.Framework.Specification;
 using System.Diagnostics.CodeAnalysis;
 
-namespace NoPrint.Ef;
+namespace NoPrint.Ef.Base;
 
 public abstract class RepositoryBase<T, Y> : IRepositoryBase<T, Y>
     where Y : IdentityBase, new()
