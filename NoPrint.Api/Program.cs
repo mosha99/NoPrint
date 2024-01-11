@@ -1,34 +1,36 @@
+
+using MediatR;
+using NoPrint.Application.CommandsAndQueries.Shop.Commands;
+using NoPrint.Application.Services.Handlers;
+using NoPrint.Ef;
+using NoPrint.Ef.Repositories;
+using NoPrint.Shops.Domain.Repository;
+using NoPrint.Users.Domain.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddMediatR(o => o.RegisterServicesFromAssemblies(typeof(CreateShopCommandHandlers).Assembly));
+builder.Services.AddDbContext<NoPrintContext>();
+
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IShopRepository, ShopRepository>();
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapGet("/", async (ISender sender) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    await sender.Send(new CreateShopCommand()
+    {
+        Password = "111111111111111",
+        PhoneNumber = "09013231042",
+        ShopAddress = "a11111111111111",
+        ShopName = "n11111111111111",
+        UserName = "u11111111111111"
+    });
 });
 
 app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

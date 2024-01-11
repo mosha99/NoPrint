@@ -1,7 +1,7 @@
 ﻿using NoPrint.Framework.Specification;
-using Noprint.Identity.Share;
 using NoPrint.Invoices.Domain.Models;
 using NoPrint.Framework;
+using NoPrint.Identity.Share;
 
 namespace NoPrint.Invoices.Domain.Repository;
 

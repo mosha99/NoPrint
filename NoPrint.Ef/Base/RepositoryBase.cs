@@ -4,12 +4,14 @@ using NoPrint.Framework;
 using NoPrint.Framework.Identity;
 using NoPrint.Framework.Specification;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using NoPrint.Identity.Share;
 
 namespace NoPrint.Ef.Base;
 
-public abstract class RepositoryBase<T, Y> : IRepositoryBase<T, Y>
-    where Y : IdentityBase, new()
-    where T : Aggregate<Y>
+public abstract class RepositoryBase<TEntity, TId> : IRepositoryBase<TEntity, TId>
+    where TId : IdentityBase, new()
+    where TEntity : Aggregate<TId>
 {
     private readonly DbContext _context;
 
@@ -17,13 +19,22 @@ public abstract class RepositoryBase<T, Y> : IRepositoryBase<T, Y>
     {
         _context = context;
     }
-    public async Task<Y> AddAndSaveAsync(T entity)
+
+    protected async Task<TId> GenerateId()
     {
+        var sequenceName = IdentityBase.GetSequenceBase<TId>();
 
+        string x2 = $"DECLARE @seq BIGINT = NEXT VALUE FOR [" +sequenceName+"]; select @seq;";
+
+        var id = await _context.Database.SqlQueryRaw<long>(x2).ToListAsync();
+
+        return new() { Id = id.Single()};
+    }
+
+    public async Task<TId> AddAsync(TEntity entity)
+    {
+        entity.Id = await GenerateId();
         _context.Add(entity);
-
-        await Save();
-
         return entity.Id;
     }
 
@@ -32,20 +43,20 @@ public abstract class RepositoryBase<T, Y> : IRepositoryBase<T, Y>
         await _context.SaveChangesAsync();
     }
 
-    public async Task<T> GetByIdAsync(Y Id, bool track = false)
+    public async Task<TEntity> GetByIdAsync(TId Id, bool track = false)
     {
-        if (!track) return await _context.Set<T>().AsNoTracking().SingleAsync(x => x._Id == Id.Id);
-        return await _context.Set<T>().SingleAsync(x => x._Id == Id.Id);
+        if (!track) return await _context.Set<TEntity>().AsNoTracking().SingleAsync(x => x._Id == Id.Id);
+        return await _context.Set<TEntity>().SingleAsync(x => x._Id == Id.Id);
     }
 
-    public async Task<T> GetSingleByCondition(IBaseGetSpecification<T> specification)
+    public async Task<TEntity> GetSingleByCondition(IBaseGetSpecification<TEntity> specification)
     {
-        return await specification.GetAsync(_context.Set<T>());
+        return await specification.GetAsync(_context.Set<TEntity>());
     }
 
-    public async Task<List<T>> GetAllByCondition(IBaseGetListSpecification<T> specification)
+    public async Task<List<TEntity>> GetAllByCondition(IBaseGetListSpecification<TEntity> specification)
     {
-        return await specification.GetAllAsync(_context.Set<T>());
+        return await specification.GetAllAsync(_context.Set<TEntity>());
     }
 }
 

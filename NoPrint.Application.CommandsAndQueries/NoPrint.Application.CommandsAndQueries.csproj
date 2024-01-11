@@ -10,4 +10,13 @@
     <PackageReference Include="MediatR" Version="12.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Shop\Commands\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Noprint.Identity.Share\NoPrint.Identity.Share.csproj" />
+    <ProjectReference Include="..\NoPrint.Shop.Domein\NoPrint.Shops.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

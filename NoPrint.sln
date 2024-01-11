@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Customers.Domain", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Ef", "NoPrint.Ef\NoPrint.Ef.csproj", "{24E52A38-D57E-4479-9AD8-828D9AE3648A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Noprint.Identity.Share", "Noprint.Identity.Share\Noprint.Identity.Share.csproj", "{277F53B1-38E8-4F0F-AD64-520D2D6039F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Identity.Share", "Noprint.Identity.Share\NoPrint.Identity.Share.csproj", "{277F53B1-38E8-4F0F-AD64-520D2D6039F4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Users.Domain", "NoPrint.Users.Domain\NoPrint.Users.Domain.csproj", "{D3AF9391-345A-42DA-AEE9-083D48CBD19F}"
 EndProject
@@ -23,11 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{A5C4C3A9-D48E-42CF-A56C-2087BEFF45F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoPrint.Api", "NoPrint.Api\NoPrint.Api.csproj", "{47F6D932-D3B5-4F78-802F-11917BAFE2D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Api", "NoPrint.Api\NoPrint.Api.csproj", "{47F6D932-D3B5-4F78-802F-11917BAFE2D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoPrint.Application.Services", "NoPrint.Application.Services\NoPrint.Application.Services.csproj", "{5F75475F-1ABC-46A8-864B-91D2E7DB07BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Application.Services", "NoPrint.Application.Services\NoPrint.Application.Services.csproj", "{5F75475F-1ABC-46A8-864B-91D2E7DB07BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoPrint.Application.CommandsAndQueries", "NoPrint.Application.CommandsAndQueries\NoPrint.Application.CommandsAndQueries.csproj", "{56DE5F4D-95F7-41DA-9143-3AFBB98E5676}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoPrint.Application.CommandsAndQueries", "NoPrint.Application.CommandsAndQueries\NoPrint.Application.CommandsAndQueries.csproj", "{56DE5F4D-95F7-41DA-9143-3AFBB98E5676}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

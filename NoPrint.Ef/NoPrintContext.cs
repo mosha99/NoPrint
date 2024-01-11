@@ -1,5 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using NoPrint.Customers.Domain.Model;
+using NoPrint.Framework;
+using NoPrint.Framework.Identity;
+using NoPrint.Identity.Share;
 using NoPrint.Invoices.Domain.Models;
 using NoPrint.Invoices.Domain.ValueObjects;
 using NoPrint.Shops.Domain.Models;
@@ -14,9 +19,25 @@ public class NoPrintContext : DbContext
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<UserBase> Users { get; set; }
 
-    public NoPrintContext(DbContextOptions<NoPrintContext> options):base(options)
+    public NoPrintContext(DbContextOptions<NoPrintContext> options) : base(options)
+    {
+
+    }
+
+    public NoPrintContext()
     {
         
+    }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(new SqlConnectionStringBuilder()
+        {
+            DataSource = ".",
+            InitialCatalog = "NP2",
+            TrustServerCertificate = true,
+            UserID = "sa",
+            Password = "1"
+        }.ToString());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -37,5 +58,16 @@ public class NoPrintContext : DbContext
             o.OwnsOne(x => x.Shop);
             o.OwnsMany<InvoiceItem>("Items");
         });
+
+        SetSequence<ShopId>(modelBuilder);
+        SetSequence<CustomerId>(modelBuilder);
+        SetSequence<InvoicesId>(modelBuilder);
+        SetSequence<UserId>(modelBuilder);
+    }
+
+    protected void SetSequence<TId>(ModelBuilder modelBuilder)
+    {
+        var sequenceName = IdentityBase.GetSequenceBase<TId>();
+        modelBuilder.HasSequence<long>(sequenceName).StartsAt(1000).IncrementsBy(1);
     }
 }

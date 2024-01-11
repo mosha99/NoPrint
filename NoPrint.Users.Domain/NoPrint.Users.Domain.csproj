@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NoPrint.Framework\NoPrint.Framework.csproj" />
-    <ProjectReference Include="..\Noprint.Identity.Share\Noprint.Identity.Share.csproj" />
+    <ProjectReference Include="..\Noprint.Identity.Share\NoPrint.Identity.Share.csproj" />
   </ItemGroup>
 
   <ItemGroup>

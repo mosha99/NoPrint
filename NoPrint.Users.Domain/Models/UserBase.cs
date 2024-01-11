@@ -2,22 +2,31 @@
 using NoPrint.Framework;
 using NoPrint.Framework.Exceptions;
 using NoPrint.Framework.Validation;
-using Noprint.Identity.Share;
+using NoPrint.Identity.Share;
 using NoPrint.Users.Domain.ValueObjects;
 
 namespace NoPrint.Users.Domain.Models;
 
 public class UserBase : Aggregate<UserId>
 {
-    public UserBase([NotNull]UserExpireDate expireDate)
+    private UserBase()
     {
-        LastLogin = null;
-        TryLoginCount = 0;
-        CanLogin = true;
-        ExpireDate = expireDate;
-        User = null;
-        Visitor = null;
+
     }
+
+    public static UserBase CreateInstance(UserExpireDate expireDate)
+    {
+        return new UserBase()
+        {
+            LastLogin = null,
+            TryLoginCount = 0,
+            CanLogin = true,
+            ExpireDate = expireDate,
+            User = null,
+            Visitor = null,
+        };
+    }
+
 
     public DateTime? LastLogin { get; private set; }
     public int TryLoginCount { get; private set; }
@@ -28,8 +37,8 @@ public class UserBase : Aggregate<UserId>
     public Visitor? Visitor { get; private set; }
 
 
-    protected void SetUser(User user) => User = user ?? throw new InvalidPropertyException("E1026");
-    protected void SetVisitor(Visitor visitor) => Visitor = visitor ?? throw new InvalidPropertyException("E1027");
+    public void SetUser(User user) => User = user ?? throw new InvalidPropertyException("E1026");
+    public void SetVisitor(Visitor visitor) => Visitor = visitor ?? throw new InvalidPropertyException("E1027");
 
     private void BaseLoginCheck()
     {

@@ -14,6 +14,7 @@ public abstract class Aggregate<T> where T : IdentityBase, new()
     public T Id { get; set; }
 
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public long _Id
     {
         get => Id.Id;

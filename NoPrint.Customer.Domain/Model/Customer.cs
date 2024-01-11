@@ -1,7 +1,7 @@
 ﻿using NoPrint.Framework;
 using NoPrint.Framework.Exceptions;
 using NoPrint.Framework.Validation;
-using Noprint.Identity.Share;
+using NoPrint.Identity.Share;
 
 namespace NoPrint.Customers.Domain.Model
 {

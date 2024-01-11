@@ -1,5 +1,8 @@
-﻿using NoPrint.Framework.Identity;
+﻿using NoPrint.Framework;
+using NoPrint.Framework.Identity;
 
-namespace Noprint.Identity.Share;
-
-public class UserId : IdentityBase { }
+namespace NoPrint.Identity.Share;
+[SequenceName("User_Sequence")]
+public class UserId : IdentityBase
+{
+}

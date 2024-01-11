@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NoPrint.Framework.Specification;
 using NoPrint.Framework.Validation;
-using Noprint.Identity.Share;
+using NoPrint.Identity.Share;
 using NoPrint.Invoices.Domain.Models;
 
 namespace NoPrint.Ef.Specifications;

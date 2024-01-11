@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Noprint.Identity.Share;
 using NoPrint.Ef.Base;
+using NoPrint.Identity.Share;
 using NoPrint.Shops.Domain.Models;
 using NoPrint.Shops.Domain.Repository;
 

@@ -1,13 +1,13 @@
 ﻿using NoPrint.Framework;
 using NoPrint.Framework.Validation;
-using Noprint.Identity.Share;
+using NoPrint.Identity.Share;
 
 namespace NoPrint.Shops.Domain.Models;
 
 public class Shop : Aggregate<ShopId>
 {
 
-    public static Shop CreateInstance(string shopName, string shopPhone, string shopAddress, string userName, string password , UserId userId)
+    public static Shop CreateInstance(string shopName, string shopPhone, string shopAddress , UserId userId)
     {
         shopName.ValidationCheck(nameof(ShopName) , x=> x?.Length >= 3, "E1015");
         shopPhone.ValidationCheck(nameof(PhoneNumber) , x=> x?.Length == 11, "E1016");

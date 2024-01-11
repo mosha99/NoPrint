@@ -1,7 +1,7 @@
 ﻿using System.Security.Principal;
-using Noprint.Identity.Share;
 using NoPrint.Customers.Domain.Model;
 using NoPrint.Framework;
+using NoPrint.Identity.Share;
 
 namespace NoPrint.Customers.Domain.Repository;
 

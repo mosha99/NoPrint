@@ -1,6 +1,6 @@
 ﻿using NoPrint.Framework.Identity;
 
-namespace Noprint.Identity.Share;
+namespace NoPrint.Identity.Share;
 
 public class ShopId : IdentityBase
 {

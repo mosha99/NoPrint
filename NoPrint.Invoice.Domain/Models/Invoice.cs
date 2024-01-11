@@ -1,7 +1,7 @@
 ﻿using NoPrint.Framework.Validation;
 using System.ComponentModel.DataAnnotations.Schema;
 using NoPrint.Framework;
-using Noprint.Identity.Share;
+using NoPrint.Identity.Share;
 using NoPrint.Invoices.Domain.ValueObjects;
 
 namespace NoPrint.Invoices.Domain.Models;

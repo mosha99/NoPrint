@@ -1,5 +1,5 @@
-﻿using Noprint.Identity.Share;
-using NoPrint.Framework;
+﻿using NoPrint.Framework;
+using NoPrint.Identity.Share;
 using NoPrint.Shops.Domain.Models;
 
 namespace NoPrint.Shops.Domain.Repository;
