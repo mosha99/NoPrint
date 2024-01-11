@@ -43,6 +43,7 @@ public abstract class RepositoryBase<TEntity, TId> : IRepositoryBase<TEntity, TI
         await _context.SaveChangesAsync();
     }
 
+    public Guid GetDbContextId() => _context.ContextId.InstanceId;
     public async Task<TEntity> GetByIdAsync(TId Id, bool track = false)
     {
         if (!track) return await _context.Set<TEntity>().AsNoTracking().SingleAsync(x => x._Id == Id.Id);
