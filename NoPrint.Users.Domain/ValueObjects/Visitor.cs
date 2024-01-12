@@ -7,17 +7,9 @@ namespace NoPrint.Users.Domain.ValueObjects;
 public class Visitor
 {
     private const int CodeExpireMin = 3;
+    private const int TryTime = 1;
     public Visitor() { }
 
-   /* public static Visitor CreateInstance(string phoneNumber)
-    {
-        return new Visitor()
-        {
-            PhoneNumber = phoneNumber
-        };
-    }*/
-
-    //public string PhoneNumber { get; private set; }
     public int? Code { get; private set; }
     public DateTime? CodeGenerateTime { get; private set; }
 
@@ -30,6 +22,8 @@ public class Visitor
     public string GenerateCode(ILoginAbleByPhone loginAbleByPhone)
     {
         loginAbleByPhone.ValidationCheck(x => x is not null, "E1032");
+
+        CodeGenerateTime.ValidationCheck(x => x is null || x.Value.AddMinutes(TryTime) < DateTime.Now, "E1035");
 
         var ensureCode = new TimeScopeCodeGenerator(CodeExpireMin).GetCode();
 

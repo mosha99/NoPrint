@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NoPrint.Ef.Base;
 using NoPrint.Framework;
 using NoPrint.Framework.Validation;
 
@@ -12,28 +13,25 @@ public class UnitRepositories
     public UnitRepositories(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        Repositories = new List<IWriteRepositoryBase>();
+        RepositoryBases = new Dictionary<Guid, IWriteRepositoryBase>();
     }
-
-    public List<IWriteRepositoryBase> Repositories { get; set; }
-
+    
+    public Dictionary<Guid, IWriteRepositoryBase> RepositoryBases { get; set; }
     public TRepo GetRepository<TRepo>() where TRepo : class, IWriteRepositoryBase
     {
         var repo = _serviceProvider.GetRequiredService<TRepo>();
 
-        Repositories.ValidationCheck(x => x.All(y => y.GetDbContextId().Equals(repo.GetDbContextId())), "E1035");
-
-        var findRepo = Repositories.SingleOrDefault(x => x.Equals(repo));
-
-        if (findRepo is not null) return findRepo as TRepo;
-
-        Repositories.Add(repo);
+        if (!RepositoryBases.Any(x => x.Key.Equals(repo.GetDbContextId())))
+            RepositoryBases.Add(repo.GetDbContextId(), repo);
 
         return repo;
     }
 
     public async Task SaveChangeAsync()
     {
-        await Repositories.First().Save();
+        foreach (var writeRepository in RepositoryBases)
+        {
+            await writeRepository.Value.Save();
+        }
     }
 }

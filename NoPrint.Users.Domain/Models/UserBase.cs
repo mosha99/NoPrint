@@ -3,6 +3,7 @@ using NoPrint.Framework;
 using NoPrint.Framework.Exceptions;
 using NoPrint.Framework.Validation;
 using NoPrint.Identity.Share;
+using NoPrint.Notification.Share;
 using NoPrint.Users.Domain.ValueObjects;
 using NoPrint.Users.Share;
 
@@ -48,13 +49,11 @@ public class UserBase : Aggregate<UserId>
         CanLogin.ValidationCheck(x => x, "E1033");
     }
 
-    public void LoginByUserName(string username, string password)
+    public void LoginByUserName()
     {
         BaseLoginCheck();
 
         User.ValidationCheck(x => x is not null, "E1029");
-        User.ValidationCheck(x => x?.Password?.Equals(password) == true, "E1030");
-        User.ValidationCheck(x => x?.UserName?.Equals(username) == true, "E1031");
 
         LastLogin = DateTime.UtcNow;
     }
@@ -68,6 +67,16 @@ public class UserBase : Aggregate<UserId>
         Visitor?.Clear();
 
         LastLogin = DateTime.UtcNow;
+    }
+
+    public void SendCode(ILoginAbleByPhone loginAbleByPhone, IMessageSenderService senderService)
+    {
+
+        Visitor.ValidationCheck(x => x != null, "E1035");
+
+        var code = Visitor.GenerateCode(loginAbleByPhone);
+
+        senderService.Send(loginAbleByPhone.PhoneNumber, $"Code is : {code}");
     }
 
     public void Disable() => CanLogin = true;
