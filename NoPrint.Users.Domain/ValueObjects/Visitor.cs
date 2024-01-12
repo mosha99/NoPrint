@@ -1,22 +1,23 @@
 ﻿using NoPrint.Framework.Validation;
 using NoPrint.Users.Domain.Tools;
+using NoPrint.Users.Share;
 
 namespace NoPrint.Users.Domain.ValueObjects;
 
 public class Visitor
 {
     private const int CodeExpireMin = 3;
-    private Visitor() { }
+    public Visitor() { }
 
-    public static Visitor CreateInstance(string phoneNumber)
+   /* public static Visitor CreateInstance(string phoneNumber)
     {
         return new Visitor()
         {
             PhoneNumber = phoneNumber
         };
-    }
+    }*/
 
-    public string PhoneNumber { get; private set; }
+    //public string PhoneNumber { get; private set; }
     public int? Code { get; private set; }
     public DateTime? CodeGenerateTime { get; private set; }
 
@@ -26,21 +27,24 @@ public class Visitor
         Code = null;
     }
 
-    public string GenerateCode()
+    public string GenerateCode(ILoginAbleByPhone loginAbleByPhone)
     {
+        loginAbleByPhone.ValidationCheck(x => x is not null, "E1032");
+
         var ensureCode = new TimeScopeCodeGenerator(CodeExpireMin).GetCode();
 
-        return GenerateCode(ensureCode, false);
+        return GenerateCode(ensureCode,loginAbleByPhone, false);
     }
-    public void Validate(string code)
+    public void Validate(string code , ILoginAbleByPhone loginAbleByPhone)
     {
         CodeGenerateTime.ValidationCheck(x => x is not null, "E1032");
+        loginAbleByPhone.ValidationCheck(x => x is not null, "E1032");
         CodeGenerateTime.Value.AddMinutes(CodeExpireMin).ValidationCheck(x => x > DateTime.Now, "E1028");
-        bool isValid = new TimeScopeCodeGenerator(CodeExpireMin).CodeIsValid(code, GenerateCode);
+        bool isValid = new TimeScopeCodeGenerator(CodeExpireMin).CodeIsValid(code, x=> GenerateCode(x,loginAbleByPhone));
         isValid.ValidationCheck(x => x, "E1027");
     }
-    private string GenerateCode(int ensureCode) => GenerateCode(ensureCode, true);
-    private string GenerateCode(int ensureCode, bool forValidate)
+    private string GenerateCode(int ensureCode, ILoginAbleByPhone loginAbleByPhone) => GenerateCode(ensureCode,loginAbleByPhone, true);
+    private string GenerateCode(int ensureCode, ILoginAbleByPhone loginAbleByPhone, bool forValidate)
     {
         if (!forValidate)
         {
@@ -50,7 +54,7 @@ public class Visitor
 
         var numberCode = 1;
 
-        PhoneNumber.Where(x => x != '0').ToList().ForEach(x => numberCode *= x);
+        loginAbleByPhone.PhoneNumber.Where(x => x != '0').ToList().ForEach(x => numberCode *= x);
 
         string result = (Code * numberCode * ensureCode).ToString();
 

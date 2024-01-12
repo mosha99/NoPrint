@@ -4,6 +4,7 @@ using NoPrint.Framework.Exceptions;
 using NoPrint.Framework.Validation;
 using NoPrint.Identity.Share;
 using NoPrint.Users.Domain.ValueObjects;
+using NoPrint.Users.Share;
 
 namespace NoPrint.Users.Domain.Models;
 
@@ -58,12 +59,12 @@ public class UserBase : Aggregate<UserId>
         LastLogin = DateTime.UtcNow;
     }
 
-    public void LoginByPhone(string phoneNumber, string code)
+    public void LoginByPhone(ILoginAbleByPhone loginAbleByPhone, string code)
     {
         BaseLoginCheck();
 
         Visitor.ValidationCheck(x => x is not null, "E1029");
-        Visitor?.Validate(code);
+        Visitor?.Validate(code, loginAbleByPhone);
         Visitor?.Clear();
 
         LastLogin = DateTime.UtcNow;

@@ -8,6 +8,6 @@ public interface IReadRepositoryBase<T, Y>
     where T : Aggregate<Y>
 {
     public Task<T> GetByIdAsync(Y shopId, bool track = false);
-    public Task<T> GetSingleByCondition(IBaseGetSpecification<T> specification);
+    public Task<T?> GetSingleByCondition(IBaseGetSpecification<T> specification);
     public Task<List<T>> GetAllByCondition(IBaseGetListSpecification<T> specification);
 }

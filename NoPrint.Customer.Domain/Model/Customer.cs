@@ -2,10 +2,11 @@
 using NoPrint.Framework.Exceptions;
 using NoPrint.Framework.Validation;
 using NoPrint.Identity.Share;
+using NoPrint.Users.Share;
 
 namespace NoPrint.Customers.Domain.Model
 {
-    public class Customer : Aggregate<CustomerId>
+    public class Customer : Aggregate<CustomerId> , ILoginAbleByPhone
     {
 
         public static Customer CreateInstance(string customerName, string customerPhone, string customerAddress, UserId userId)
@@ -40,7 +41,7 @@ namespace NoPrint.Customers.Domain.Model
 
 
         private Customer() { }
-        public UserId User { get; set; }
+        public UserId User { get; private set; }
         public string CustomerName { get; private set; }
         public string CustomerAddress { get; private set; }
         public string PhoneNumber { get; private set; }

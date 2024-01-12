@@ -27,8 +27,4 @@
 		<ProjectReference Include="..\NoPrint.Users.Domain\NoPrint.Users.Domain.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Specifications\" />
-	</ItemGroup>
-
 </Project>

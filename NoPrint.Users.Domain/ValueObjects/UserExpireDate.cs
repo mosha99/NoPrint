@@ -16,6 +16,7 @@ public class UserExpireDate
     }
 
     public DateTime? ExpireDate { get; private set; }
+    public static UserExpireDate Empty => new UserExpireDate(null);
 
     public bool IsExpire() => ExpireDate != null && ExpireDate <= DateTime.Now;
 }
