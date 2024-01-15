@@ -1,21 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NoPrint.Customers.Domain.Model;
 using NoPrint.Framework.Specification;
 using NoPrint.Identity.Share;
+using NoPrint.Shops.Domain.Models;
 
 namespace NoPrint.Application.Ef.Specifications;
 
-public class GetCustomerByUserSpecification : IBaseGetSpecification<Customer>
+public class GetShopByUserSpecification : IBaseGetSpecification<Shop>
 {
     private readonly UserId _userId;
 
 
-    public GetCustomerByUserSpecification(UserId userId)
+    public GetShopByUserSpecification(UserId userId)
     {
         _userId = userId;
     }
 
-    public async Task<Customer> GetAsync(IQueryable<Customer> queryable)
+    public async Task<Shop> GetAsync(IQueryable<Shop> queryable)
     {
         return await queryable.SingleAsync(x => x.User.Id == _userId.Id);
     }

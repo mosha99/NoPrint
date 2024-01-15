@@ -1,8 +1,6 @@
-﻿using System.Reflection;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NoPrint.Customers.Domain.Model;
-using NoPrint.Framework;
 using NoPrint.Framework.Identity;
 using NoPrint.Identity.Share;
 using NoPrint.Invoices.Domain.Models;
@@ -10,7 +8,7 @@ using NoPrint.Invoices.Domain.ValueObjects;
 using NoPrint.Shops.Domain.Models;
 using NoPrint.Users.Domain.Models;
 
-namespace NoPrint.Ef;
+namespace NoPrint.Application.Ef;
 
 public class NoPrintContext : DbContext
 {

@@ -11,13 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Shop\Commands\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\NoPrint.Application.Infra\NoPrint.Application.Infra.csproj" />
     <ProjectReference Include="..\Noprint.Identity.Share\NoPrint.Identity.Share.csproj" />
     <ProjectReference Include="..\NoPrint.Invoice.Domain\NoPrint.Invoices.Domain.csproj" />
     <ProjectReference Include="..\NoPrint.Shop.Domein\NoPrint.Shops.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="User\" />
   </ItemGroup>
 
 </Project>

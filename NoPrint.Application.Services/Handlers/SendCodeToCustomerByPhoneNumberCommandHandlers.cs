@@ -1,8 +1,9 @@
 ﻿using MediatR;
 using NoPrint.Application.CommandsAndQueries.Customer.Commands;
+using NoPrint.Application.Ef;
+using NoPrint.Application.Ef.Specifications;
 using NoPrint.Customers.Domain.Repository;
 using NoPrint.Ef;
-using NoPrint.Ef.Specifications;
 using NoPrint.Framework.Validation;
 using NoPrint.Notification.Share;
 using NoPrint.Users.Domain.Repository;

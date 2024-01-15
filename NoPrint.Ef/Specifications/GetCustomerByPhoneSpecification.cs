@@ -1,12 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using NoPrint.Customers.Domain.Model;
 using NoPrint.Framework.Specification;
 using NoPrint.Framework.Validation;
-using NoPrint.Users.Domain.Models;
-using System.Numerics;
-using NoPrint.Customers.Domain.Model;
 
-namespace NoPrint.Ef.Specifications;
+namespace NoPrint.Application.Ef.Specifications;
 
 public class GetCustomerByPhoneSpecification : IBaseGetSpecification<Customer>
 {

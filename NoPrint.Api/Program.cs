@@ -1,38 +1,56 @@
 
+using Azure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using NoPrint.Api.CustomPipe;
 using NoPrint.Application.CommandsAndQueries.Shop.Commands;
+using NoPrint.Application.Ef;
+using NoPrint.Application.Ef.Repositories;
+using NoPrint.Application.Infra;
 using NoPrint.Application.Services.Handlers;
 using NoPrint.Ef;
-using NoPrint.Ef.Repositories;
 using NoPrint.Shops.Domain.Repository;
 using NoPrint.Users.Domain.Repository;
+using System.Text.Json;
+using NoPrint.Api.Implementation;
+using NoPrint.Customers.Domain.Repository;
+using NoPrint.Notification.Share;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMediatR(o => o.RegisterServicesFromAssemblies(typeof(CreateShopCommandHandlers).Assembly));
 builder.Services.AddDbContext<NoPrintContext>();
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IShopRepository, ShopRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+
+
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAccessManagerService, AccessManagerService>();
+builder.Services.AddScoped<IIdentityStorageService, IdentityStorageService>();
+builder.Services.AddScoped<IMessageSenderService, MessageSenderService>();
 
 builder.Services.AddTransient<UnitRepositories>();
-
+builder.Services.AddTransient<CustomPipeline>();
 
 var app = builder.Build();
 
 
 
-app.MapGet("/", async (ISender sender) =>
-{
-    await sender.Send(new CreateShopCommand()
+app.MapPost("Commands/{commandName}",
+    async (string commandName, JsonElement request, HttpRequest httpRequest, CustomPipeline customPipeline) =>
     {
-        Password = "111111111111111",
-        PhoneNumber = "09013231042",
-        ShopAddress = "a11111111111111",
-        ShopName = "n11111111111111",
-        UserName = "u11111111111111"
-    });
-});
+        try
+        {
+            return await customPipeline.Execute(commandName, request, httpRequest);
+        }
+        catch (BadRequestException e)
+        {
+            return Results.BadRequest(e.Message);
+        }
+    }
+);
 
 app.Run();
 

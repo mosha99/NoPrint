@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NoPrint.Ef;
+using NoPrint.Application.Ef;
 
 #nullable disable
 
@@ -17,7 +17,7 @@ namespace NoPrint.Ef.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -116,6 +116,9 @@ namespace NoPrint.Ef.Migrations
 
                     b.Property<DateTime?>("LastLogin")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("LoginId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("TryLoginCount")
                         .HasColumnType("int");
@@ -306,10 +309,6 @@ namespace NoPrint.Ef.Migrations
 
                             b1.Property<DateTime?>("CodeGenerateTime")
                                 .HasColumnType("datetime2");
-
-                            b1.Property<string>("PhoneNumber")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("UserBase_Id");
 

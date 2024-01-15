@@ -1,19 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using NoPrint.Framework;
 using NoPrint.Framework.Identity;
 using NoPrint.Framework.Specification;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using NoPrint.Identity.Share;
 
-namespace NoPrint.Ef.Base;
+namespace NoPrint.Application.Ef.Base;
 
 public abstract class RepositoryBase<TEntity, TId> : IRepositoryBase<TEntity, TId>
     where TId : IdentityBase, new()
     where TEntity : Aggregate<TId>
 {
-    private readonly DbContext _context;
+    protected readonly DbContext _context;
 
     protected RepositoryBase(DbContext context)
     {

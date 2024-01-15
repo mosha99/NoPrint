@@ -2,9 +2,8 @@
 using NoPrint.Framework.Specification;
 using NoPrint.Framework.Validation;
 using NoPrint.Users.Domain.Models;
-using NoPrint.Users.Domain.ValueObjects;
 
-namespace NoPrint.Ef.Specifications;
+namespace NoPrint.Application.Ef.Specifications;
 
 public class GetUserByUserNameAndPasswordSpecification : IBaseGetSpecification<UserBase>
 {

@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using NoPrint.Application.CommandsAndQueries.Invoices.Commands;
+using NoPrint.Application.Ef;
+using NoPrint.Application.Ef.Specifications;
 using NoPrint.Customers.Domain.Model;
 using NoPrint.Customers.Domain.Repository;
 using NoPrint.Ef;
-using NoPrint.Ef.Specifications;
 using NoPrint.Invoices.Domain.Models;
 using NoPrint.Invoices.Domain.Repository;
 using NoPrint.Users.Domain.Models;

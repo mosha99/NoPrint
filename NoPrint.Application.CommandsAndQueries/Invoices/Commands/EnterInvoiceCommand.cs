@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using NoPrint.Application.Infra;
+using NoPrint.Framework;
 using NoPrint.Identity.Share;
 using NoPrint.Invoices.Domain.ValueObjects;
 
 namespace NoPrint.Application.CommandsAndQueries.Invoices.Commands;
-
+[Access(Rule.Shop_User)]
 public class EnterInvoiceCommand : IRequest<long>
 {
     public ShopId GetShopId() => new ShopId(){Id = ShopId};

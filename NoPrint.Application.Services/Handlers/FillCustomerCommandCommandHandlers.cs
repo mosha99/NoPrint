@@ -2,6 +2,7 @@
 using MediatR;
 using NoPrint.Application.CommandsAndQueries.Customer.Commands;
 using NoPrint.Application.CommandsAndQueries.Shop.Commands;
+using NoPrint.Application.Ef;
 using NoPrint.Customers.Domain.Repository;
 using NoPrint.Ef;
 using NoPrint.Users.Domain.Repository;

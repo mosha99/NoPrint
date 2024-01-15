@@ -1,10 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using NoPrint.Ef.Base;
+﻿using Microsoft.Extensions.DependencyInjection;
 using NoPrint.Framework;
-using NoPrint.Framework.Validation;
 
-namespace NoPrint.Ef;
+namespace NoPrint.Application.Ef;
 
 public class UnitRepositories
 {

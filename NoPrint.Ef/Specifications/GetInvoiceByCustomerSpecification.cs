@@ -4,7 +4,7 @@ using NoPrint.Framework.Validation;
 using NoPrint.Identity.Share;
 using NoPrint.Invoices.Domain.Models;
 
-namespace NoPrint.Ef.Specifications;
+namespace NoPrint.Application.Ef.Specifications;
 
 public class GetInvoiceByCustomerSpecification : IBaseGetListSpecification<Invoice>
 {

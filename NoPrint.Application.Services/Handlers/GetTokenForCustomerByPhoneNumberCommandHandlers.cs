@@ -1,24 +1,29 @@
 ﻿using MediatR;
 using NoPrint.Application.CommandsAndQueries.Customer.Commands;
+using NoPrint.Application.Ef;
+using NoPrint.Application.Ef.Specifications;
+using NoPrint.Application.Infra;
 using NoPrint.Customers.Domain.Repository;
 using NoPrint.Ef;
-using NoPrint.Ef.Specifications;
 using NoPrint.Framework.Validation;
 using NoPrint.Users.Domain.Repository;
+using NoPrint.Users.Domain.Tools;
 
 namespace NoPrint.Application.Services.Handlers;
 
-public class GetTokenForCustomerByPhoneNumberCommandHandlers : IRequestHandler<GetTokenForCustomerByPhoneNumberCommand, string>
+public class GetTokenForCustomerByPhoneNumberCommandHandlers : IRequestHandler<GetTokenForCustomerByPhoneNumberCommand, TokenBehavior>
 {
     private readonly UnitRepositories _repositories;
+    private readonly ITokenService _tokenService;
 
 
-    public GetTokenForCustomerByPhoneNumberCommandHandlers(UnitRepositories repositories)
+    public GetTokenForCustomerByPhoneNumberCommandHandlers(UnitRepositories repositories, ITokenService tokenService)
     {
         _repositories = repositories;
+        _tokenService = tokenService;
     }
 
-    public async Task<string> Handle(GetTokenForCustomerByPhoneNumberCommand request, CancellationToken cancellationToken)
+    public async Task<TokenBehavior> Handle(GetTokenForCustomerByPhoneNumberCommand request, CancellationToken cancellationToken)
     {
         var customer = await _repositories.GetRepository<ICustomerRepository>().GetSingleByCondition(new GetCustomerByPhoneSpecification(request.PhoneNumber));
 
@@ -26,10 +31,10 @@ public class GetTokenForCustomerByPhoneNumberCommandHandlers : IRequestHandler<G
 
         var user = await _repositories.GetRepository<IUserRepository>().GetByIdAsync(customer.User);
 
-        user.LoginByPhone(customer, request.Code);
+       var loginId = user.LoginByPhone(customer, request.Code);
 
         await _repositories.SaveChangeAsync();
 
-        return "";
+        return _tokenService.GenerateToken(user.Id,loginId, Rule.Customer_Visitor);
     }
 }

@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using NoPrint.Application.Infra;
+using NoPrint.Framework;
 using NoPrint.Identity.Share;
 
 namespace NoPrint.Application.CommandsAndQueries.Customer.Commands;
-
+[Access(Rule.Customer_Visitor)]
 public class FillCustomerCommand : IRequest<long>
 {
     public long CustomerId { get; set; }
