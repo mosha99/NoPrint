@@ -11,11 +11,10 @@ namespace NoPrint.Customers.Domain.Model
 
         public static Customer CreateInstance(string customerName, string customerPhone, string customerAddress, UserId userId)
         {
-            customerName.ValidationCheck(nameof(CustomerName), x => x?.Length >= 3, "E1015");
-            customerPhone.ValidationCheck(nameof(PhoneNumber), x => x?.Length == 11, "E1016");
-            customerAddress.ValidationCheck(nameof(CustomerAddress), x => !string.IsNullOrWhiteSpace(x), "E1017");
-            userId.ValidationCheck(nameof(userId), x => x.Id != 0, "E1033");
-
+            customerName.ValidationCheck(nameof(CustomerName), x => x?.Length >= 3, "Error_Length_Min_3");
+            customerPhone.ValidationCheck(nameof(PhoneNumber), x => x?.Length == 11, "Error_Length_Eql_11");
+            customerAddress.ValidationCheck(nameof(CustomerAddress), x => !string.IsNullOrWhiteSpace(x), "Error_Required");
+            userId.ValidationCheck(nameof(userId), x => x.Id != 0, "Error_Required");
 
             return new Customer()
             {
@@ -28,8 +27,8 @@ namespace NoPrint.Customers.Domain.Model
         }
         public static Customer CreateInstance(string customerPhone, UserId userId)
         {
-            customerPhone.ValidationCheck(nameof(PhoneNumber), x => x?.Length == 11, "E1016");
-            userId.ValidationCheck(nameof(userId), x => x.Id != 0, "E1033");
+            customerPhone.ValidationCheck(nameof(PhoneNumber), x => x?.Length == 11, "Error_Length_Eql_11");
+            userId.ValidationCheck(nameof(userId), x => x.Id != 0, "Error_Required");
 
             return new Customer()
             {
@@ -48,10 +47,10 @@ namespace NoPrint.Customers.Domain.Model
         public bool FillProfile { get; private set; }
         public void FillData(string customerName, string customerAddress)
         {
-            if (FillProfile) throw new InvalidPropertyException(nameof(FillProfile), "E1023");
+            if (FillProfile) throw new InvalidPropertyException(nameof(FillProfile), "Error_CustomerFilledNow");
 
-            customerName.ValidationCheck(nameof(CustomerName), x => x?.Length >= 3, "E1015");
-            customerAddress.ValidationCheck(nameof(CustomerAddress), x => !string.IsNullOrWhiteSpace(x), "E1017");
+            customerName.ValidationCheck(nameof(CustomerName), x => x?.Length >= 3, "Error_Length_Min_3");
+            customerAddress.ValidationCheck(nameof(CustomerAddress), x => !string.IsNullOrWhiteSpace(x), "Error_Required");
 
             CustomerName = customerName;
             CustomerAddress = customerAddress;

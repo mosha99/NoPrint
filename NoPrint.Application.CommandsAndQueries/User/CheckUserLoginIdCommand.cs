@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using NoPrint.Application.CommandsAndQueries.Interfaces;
 using NoPrint.Identity.Share;
 
 namespace NoPrint.Application.CommandsAndQueries.User;
 
-public class CheckUserLoginIdCommand: IRequest
+public class CheckUserLoginIdCommand: IInternalRequest
 {
     public CheckUserLoginIdCommand(UserId userId,Guid loginId) 
     {

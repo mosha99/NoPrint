@@ -21,9 +21,9 @@ public class Visitor
 
     public string GenerateCode(ILoginAbleByPhone loginAbleByPhone)
     {
-        loginAbleByPhone.ValidationCheck(x => x is not null, "E1032");
+        loginAbleByPhone.ValidationCheck(x => x is not null, "Error_CantFindVisitor");
 
-        CodeGenerateTime.ValidationCheck(x => x is null || x.Value.AddMinutes(TryTime) < DateTime.Now, "E1035");
+        CodeGenerateTime.ValidationCheck(x => x is null || x.Value.AddMinutes(TryTime) < DateTime.Now, "Error_NotValid");
 
         var ensureCode = new TimeScopeCodeGenerator(CodeExpireMin).GetCode();
 
@@ -31,11 +31,11 @@ public class Visitor
     }
     public void Validate(string code , ILoginAbleByPhone loginAbleByPhone)
     {
-        CodeGenerateTime.ValidationCheck(x => x is not null, "E1032");
-        loginAbleByPhone.ValidationCheck(x => x is not null, "E1032");
-        CodeGenerateTime.Value.AddMinutes(CodeExpireMin).ValidationCheck(x => x > DateTime.Now, "E1028");
+        CodeGenerateTime.ValidationCheck(x => x is not null, "Error_NotValid");
+        loginAbleByPhone.ValidationCheck(x => x is not null, "Error_NotValid");
+        CodeGenerateTime.Value.AddMinutes(CodeExpireMin).ValidationCheck(x => x > DateTime.Now, "Error_NotValid");
         bool isValid = new TimeScopeCodeGenerator(CodeExpireMin).CodeIsValid(code, x=> GenerateCode(x,loginAbleByPhone));
-        isValid.ValidationCheck(x => x, "E1027");
+        isValid.ValidationCheck(x => x, "Error_NotValid");
     }
     private string GenerateCode(int ensureCode, ILoginAbleByPhone loginAbleByPhone) => GenerateCode(ensureCode,loginAbleByPhone, true);
     private string GenerateCode(int ensureCode, ILoginAbleByPhone loginAbleByPhone, bool forValidate)

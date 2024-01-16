@@ -12,7 +12,7 @@ public class GetInvoiceByShopSpecification : IBaseGetListSpecification<Invoice>
 
     public GetInvoiceByShopSpecification(ShopId shopId)
     {
-        shopId.ValidationCheck("Shop", x => x is not null, "E1035");
+        shopId.ValidationCheck("Shop", x => x is not null, "Error_NotFind");
         _shopId = shopId;
     }
 

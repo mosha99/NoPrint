@@ -8,14 +8,14 @@ public class InvoiceItem
 
     public static InvoiceItem CreateInstance(string productName, string productCode, decimal count, decimal price, decimal rawFee, decimal discountRate, decimal discountFee, decimal finalFee)
     {
-        productName.ValidationCheck(nameof(ProductName), x => !string.IsNullOrWhiteSpace(x), "E1001");
-        productCode.ValidationCheck(nameof(ProductCode), x => !string.IsNullOrWhiteSpace(x), "E1002");
-        count.ValidationCheck(nameof(Count), x => x > 0, "E1003");
-        price.ValidationCheck(nameof(Price), x => x > 0, "E1004");
-        rawFee.ValidationCheck(nameof(RawFee), x => x > 0 && x == count * price, "E1005");
-        discountRate.ValidationCheck(nameof(DiscountRate), x => x >= 0, "E1006");
-        discountFee.ValidationCheck(nameof(DiscountFee), x => x >= 0 && x == rawFee * discountRate, "E1007");
-        finalFee.ValidationCheck(nameof(FinalFee), x => x == rawFee - discountFee, "E1008");
+        productName.ValidationCheck(nameof(ProductName), x => !string.IsNullOrWhiteSpace(x), "Error_Required");
+        productCode.ValidationCheck(nameof(ProductCode), x => !string.IsNullOrWhiteSpace(x), "Error_Required");
+        count.ValidationCheck(nameof(Count), x => x > 0, "Error_NotValid");
+        price.ValidationCheck(nameof(Price), x => x > 0, "Error_NotValid");
+        rawFee.ValidationCheck(nameof(RawFee), x => x > 0 && x == count * price, "Error_NotValid");
+        discountRate.ValidationCheck(nameof(DiscountRate), x => x >= 0, "Error_NotValid");
+        discountFee.ValidationCheck(nameof(DiscountFee), x => x >= 0 && x == rawFee * discountRate, "Error_NotValid");
+        finalFee.ValidationCheck(nameof(FinalFee), x => x == rawFee - discountFee, "Error_NotValid");
 
         return new InvoiceItem()
         {

@@ -17,9 +17,13 @@ public class UserRepository : RepositoryBase<UserBase, UserId>, IUserRepository
     {
         var user = await _context.Set<UserBase>().SingleOrDefaultAsync(x => x._Id == userId.Id);
 
-        user.ValidationCheck(x => x is not null, "E1035");
+        user.ValidationCheck(x => x is not null, "Error_UserNotFind");
 
-        user.ValidationCheck(x => x.LoginId.Equals(loginId), "E1035");
+        user.ValidationCheck(x => x.LoginId.Equals(loginId), "Error_TokenInvalid");
+
+        user.ValidationCheck(x=>x.CanLogin, "Error_UserCanNotLogin");
+
+        user.ValidationCheck(x=>x.ExpireDate?.IsExpire() != true, "Error_UserExpire");
     }
 
 }

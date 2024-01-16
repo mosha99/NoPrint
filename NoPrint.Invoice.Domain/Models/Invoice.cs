@@ -23,23 +23,24 @@ public class Invoice : Aggregate<InvoicesId>
 
     private void SetItems(List<InvoiceItem> items)
     {
-        items.ValidationCheck(nameof(InvoiceItems),x => x?.Any() == true && x.All(x => x is not null) , "E1009");
-        items.ValidationCheck(nameof(InvoiceItems),x => DiscountFee == x.Sum(y => y.DiscountFee), "E1013");
-        items.ValidationCheck(nameof(InvoiceItems),x => FinalCost == x.Sum(y => y.FinalFee), "E1014");
-        items.ValidationCheck(nameof(InvoiceItems),x => RawCost == x.Sum(y => y.RawFee), "E1012");
+        items.ValidationCheck(nameof(InvoiceItems),x => x?.Any() == true && x.All(x => x is not null) , "Error_InvoiceItemNotValid");
+        items.ValidationCheck(nameof(InvoiceItems),x => DiscountFee == x.Sum(y => y.DiscountFee), "Error_InvoiceItemNotValid");
+        items.ValidationCheck(nameof(InvoiceItems),x => FinalCost == x.Sum(y => y.FinalFee), "Error_InvoiceItemNotValid");
+        items.ValidationCheck(nameof(InvoiceItems),x => RawCost == x.Sum(y => y.RawFee), "Error_InvoiceItemNotValid");
 
         Items = items;
     }
 
     public static Invoice Create(CustomerId customerId,ShopId shopId, decimal rawCost, decimal discountRate, decimal discountFee, decimal finalCost, List<InvoiceItem> invoiceItems)
     {
-        shopId.ValidationCheck(nameof(Shop), x => x.Id != 0 , "E1023");
-        customerId.ValidationCheck(nameof(Customer), x => x.Id != 0 , "E1011");
-        rawCost.ValidationCheck(nameof(RawCost), x=> x > 0, "E1020");
-        discountRate.ValidationCheck(nameof(DiscountRate), x => x is >= 0 and <= 100 && x * rawCost == discountFee , "E1015");
-        discountFee.ValidationCheck(nameof(DiscountFee), x=> x > 0, "E1021");
-        finalCost.ValidationCheck(nameof(FinalCost), x=> x > 0 && x == rawCost -  discountFee, "E1022");
+        shopId.ValidationCheck(nameof(Shop), x => x.Id != 0 , "Error_Required");
+        customerId.ValidationCheck(nameof(Customer), x => x.Id != 0 , "Error_Required");
+        rawCost.ValidationCheck(nameof(RawCost), x=> x > 0, "Error_NotValid");
+        discountRate.ValidationCheck(nameof(DiscountRate), x => x is >= 0 and <= 100 && x * rawCost == discountFee , "Error_NotValid");
+        discountFee.ValidationCheck(nameof(DiscountFee), x=> x > 0, "Error_NotValid");
+        finalCost.ValidationCheck(nameof(FinalCost), x=> x > 0 && x == rawCost -  discountFee, "Error_NotValid");
 
+        
         
         var invoice = new Invoice()
         {

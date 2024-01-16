@@ -27,7 +27,7 @@ public class GetTokenForCustomerByPhoneNumberCommandHandlers : IRequestHandler<G
     {
         var customer = await _repositories.GetRepository<ICustomerRepository>().GetSingleByCondition(new GetCustomerByPhoneSpecification(request.PhoneNumber));
 
-        customer.ValidationCheck("PhoneNumber", x => x is not null, "E1035");
+        customer.ValidationCheck("PhoneNumber", x => x is not null, "Error_Required");
 
         var user = await _repositories.GetRepository<IUserRepository>().GetByIdAsync(customer.User);
 

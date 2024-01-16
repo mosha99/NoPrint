@@ -12,8 +12,8 @@ public class GetUserByUserNameAndPasswordSpecification : IBaseGetSpecification<U
 
     public GetUserByUserNameAndPasswordSpecification(string userName, string password)
     {
-        userName.ValidationCheck("UserName", x => !string.IsNullOrWhiteSpace(x), "E1034");
-        password.ValidationCheck("Password", x => !string.IsNullOrWhiteSpace(x), "E1035");
+        userName.ValidationCheck("UserName", x => !string.IsNullOrWhiteSpace(x), "Error_Required");
+        password.ValidationCheck("Password", x => !string.IsNullOrWhiteSpace(x), "Error_Required");
 
         _userName = userName;
         _password = password;

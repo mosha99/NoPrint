@@ -6,7 +6,7 @@ public class UserExpireDate
 {
     public UserExpireDate(DateTime? expireDate)
     {
-        expireDate.ValidationCheck("ExpireDate", x => x is null | x > DateTime.Now, "E1024");
+        expireDate.ValidationCheck("ExpireDate", x => x is null | x > DateTime.Now, "Error_NotValid");
         ExpireDate = expireDate;
     }
 

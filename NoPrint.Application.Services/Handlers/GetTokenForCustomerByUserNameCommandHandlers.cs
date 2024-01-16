@@ -27,11 +27,11 @@ public class GetTokenForCustomerByUserNameCommandHandlers : IRequestHandler<GetT
     {
         var user = await _repositories.GetRepository<IUserRepository>().GetSingleByCondition(new GetUserByUserNameAndPasswordSpecification(request.UserName, request.Password));
 
-        user.ValidationCheck("UserName", x => x is not null, "E1035");
+        user.ValidationCheck("UserName", x => x is not null, "Error_Required");
 
         var customer = await _repositories.GetRepository<ICustomerRepository>().GetSingleByCondition(new GetCustomerByUserSpecification(user.Id));
 
-        customer.ValidationCheck(x => x is not null, "E1035");
+        customer.ValidationCheck("Customer",x => x is not null, "Error_NotFind");
 
         var loginId = user.LoginByUserName();
 

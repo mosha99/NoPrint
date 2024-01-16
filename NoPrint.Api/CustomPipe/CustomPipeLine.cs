@@ -13,6 +13,7 @@ using NoPrint.Framework.Validation;
 using NoPrint.Identity.Share;
 using NoPrint.Users.Domain.Repository;
 using Rule = NoPrint.Application.Infra.Rule;
+using NoPrint.Application.CommandsAndQueries.Interfaces;
 
 namespace NoPrint.Api.CustomPipe;
 
@@ -38,12 +39,18 @@ public class CustomPipeline
 
     public async Task<object?> Execute(string commandName, JsonElement request, HttpRequest httpRequest)
     {
+        if (httpRequest.Headers.TryGetValue("NS", out StringValues nameSpace))
+        {
+            commandName = $"{nameSpace}.{commandName}";
+        }
+
         var command = CreateCommand(commandName, request);
 
         var accessor = typeof(CommandsFlag).Assembly.GetType(commandName)
             .GetCustomAttribute<AccessAttribute>();
 
-        accessor.ValidationCheck(x => x is not null, "E1035");
+
+        accessor.ValidationCheck(x => x is not null, "Error_AccessDenied");
 
         if (accessor?.Accessors?.Any(x => x == Rule.NonAuthorize) != true)
         {
@@ -72,11 +79,14 @@ public class CustomPipeline
     {
         var commandType = typeof(CommandsFlag).Assembly.GetType(commandName);
 
-        if (commandType == null || !typeof(IBaseRequest).IsAssignableFrom(commandType)) throw new BadRequestException("E1035");
+        if (commandType == null || !typeof(IBaseRequest).IsAssignableFrom(commandType)) throw new BadRequestException("Error_CommandNotFind");
+
+        if(typeof(IInternalRequest).IsAssignableFrom(commandType) ||
+           commandType.GetInterfaces().Any(x=>x.GetGenericTypeDefinition() == typeof(IInternalRequest<>))) throw new BadRequestException("Error_PrivateCommand");
 
         object? command = request.Deserialize(commandType);
 
-        if (command == null) throw new BadRequestException("E1035");
+        if (command == null) throw new BadRequestException("Error_DeserializeCommandError");
 
         return command;
     }

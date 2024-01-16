@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using NoPrint.Application.CommandsAndQueries.Shop.Commands;
-using NoPrint.Application.CommandsAndQueries.User;
 using NoPrint.Application.Ef;
 using NoPrint.Ef;
 using NoPrint.Identity.Share;
@@ -37,21 +36,5 @@ public class CreateShopCommandHandlers : IRequestHandler<CreateShopCommand, long
         await _repositories.SaveChangeAsync();
 
         return shopId.Id;
-    }
-}
-
-public class CheckUserLoginIdCommandHandlers : IRequestHandler<CheckUserLoginIdCommand>
-{
-    private readonly IUserRepository _userRepository;
-
-
-    public CheckUserLoginIdCommandHandlers(IUserRepository userRepository )
-    {
-        _userRepository = userRepository;
-    }
-
-    public async Task Handle(CheckUserLoginIdCommand request, CancellationToken cancellationToken)
-    {
-       await _userRepository.CheckUserLogin(request.UserId, request.LoginId);
     }
 }

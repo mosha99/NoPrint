@@ -12,7 +12,7 @@ public class GetInvoiceByCustomerSpecification : IBaseGetListSpecification<Invoi
 
     public GetInvoiceByCustomerSpecification(CustomerId customerId)
     {
-        customerId.ValidationCheck("Customer", x => x is not null, "E1035");
+        customerId.ValidationCheck("Customer", x => x is not null, "Error_NotFind");
         _customerId = customerId;
     }
 

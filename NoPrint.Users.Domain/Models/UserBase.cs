@@ -38,18 +38,18 @@ public class UserBase : Aggregate<UserId>
     public Guid LoginId { get; private set; }
     
 
-    public void SetUser(User user) => User = user ?? throw new InvalidPropertyException("E1026");
-    public void SetVisitor(Visitor visitor) => Visitor = visitor ?? throw new InvalidPropertyException("E1027");
+    public void SetUser(User user) => User = user ?? throw new InvalidPropertyException("Error_UserCanNotBeNull");
+    public void SetVisitor(Visitor visitor) => Visitor = visitor ?? throw new InvalidPropertyException("Error_VisitorCanNotBeNull");
     private void BaseLoginCheck()
     {
-        TryLoginCount.ValidationCheck(x => x <= 3, "E1032");
-        ExpireDate.ValidationCheck(x => !x.IsExpire(), "E1032");
-        CanLogin.ValidationCheck(x => x, "E1033");
+        TryLoginCount.ValidationCheck(x => x <= 3, "Error_TryLoginLimit");
+        ExpireDate.ValidationCheck(x => !x.IsExpire(), "Error_UserExpire");
+        CanLogin.ValidationCheck(x => x, "Error_UserCanNotLogin");
         LoginId = Guid.NewGuid();
     }
     public Guid LoginByUserName()
     {
-        User.ValidationCheck(x => x is not null, "E1029");
+        User.ValidationCheck(x => x is not null, "Error_CanNotLoginByPassword");
 
         BaseLoginCheck();
 
@@ -59,7 +59,7 @@ public class UserBase : Aggregate<UserId>
     }
     public Guid LoginByPhone(ILoginAbleByPhone loginAbleByPhone, string code)
     {
-        Visitor.ValidationCheck(x => x is not null, "E1029");
+        Visitor.ValidationCheck(x => x is not null, "Error_CanNotLoginByPhone");
 
         Visitor?.Validate(code, loginAbleByPhone);
 
@@ -74,7 +74,7 @@ public class UserBase : Aggregate<UserId>
     public void SendCode(ILoginAbleByPhone loginAbleByPhone, IMessageSenderService senderService)
     {
 
-        Visitor.ValidationCheck(x => x != null, "E1035");
+        Visitor.ValidationCheck(x => x != null, "Error_SendNotSupport");
 
         var code = Visitor.GenerateCode(loginAbleByPhone);
 
@@ -83,7 +83,7 @@ public class UserBase : Aggregate<UserId>
     public void Disable() => CanLogin = true;
     public void Enable()
     {
-        ExpireDate.ValidationCheck("ExpireDate", x => !x.IsExpire(), "E1025");
+        ExpireDate.ValidationCheck("ExpireDate", x => !x.IsExpire(), "Error_UserExpire");
         CanLogin = true;
     }
 }
