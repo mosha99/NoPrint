@@ -1,4 +1,5 @@
-﻿using NoPrint.Framework.Validation;
+﻿using System.Text.Json.Serialization;
+using NoPrint.Framework.Validation;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace NoPrint.Framework.Exceptions;
@@ -23,4 +24,14 @@ public class InvalidPropertyException : Exception
     }
 
     public LogicalError Error { get; private set; }
+}
+public class AggregateInvalidPropertyException : Exception
+{
+    public AggregateInvalidPropertyException(List<LogicalError> errors)
+    {
+        Error = errors.Cast<object>().ToList();
+    }
+
+    public List<object> Error { get; private set; }
+
 }

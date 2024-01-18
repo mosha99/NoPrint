@@ -11,7 +11,7 @@ public class GetCustomerByPhoneSpecification : IBaseGetSpecification<Customer>
 
     public GetCustomerByPhoneSpecification(string phone)
     {
-        phone.ValidationCheck("PhoneNumber", x => !string.IsNullOrWhiteSpace(x), "Error_Required");
+        phone.ValidationCheck("CustomerPhoneNumber", x => !string.IsNullOrWhiteSpace(x), "Error_Required");
         _phone = phone;
     }
     public async Task<Customer?> GetAsync(IQueryable<Customer> queryable)

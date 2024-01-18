@@ -40,8 +40,6 @@ public class Invoice : Aggregate<InvoicesId>
         discountFee.ValidationCheck(nameof(DiscountFee), x=> x > 0, "Error_NotValid");
         finalCost.ValidationCheck(nameof(FinalCost), x=> x > 0 && x == rawCost -  discountFee, "Error_NotValid");
 
-        
-        
         var invoice = new Invoice()
         {
             Customer = customerId,

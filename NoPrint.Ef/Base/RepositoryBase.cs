@@ -27,7 +27,7 @@ public abstract class RepositoryBase<TEntity, TId> : IRepositoryBase<TEntity, TI
         return new() { Id = id.Single()};
     }
 
-    public async Task<TId> AddAsync(TEntity entity)
+    public virtual async Task<TId> AddAsync(TEntity entity)
     {
         entity.Id = await GenerateId();
         _context.Add(entity);
@@ -45,12 +45,10 @@ public abstract class RepositoryBase<TEntity, TId> : IRepositoryBase<TEntity, TI
         if (!track) return await _context.Set<TEntity>().AsNoTracking().SingleAsync(x => x._Id == Id.Id);
         return await _context.Set<TEntity>().SingleAsync(x => x._Id == Id.Id);
     }
-
     public async Task<TEntity> GetSingleByCondition(IBaseGetSpecification<TEntity> specification)
     {
         return await specification.GetAsync(_context.Set<TEntity>());
     }
-
     public async Task<List<TEntity>> GetAllByCondition(IBaseGetListSpecification<TEntity> specification)
     {
         return await specification.GetAllAsync(_context.Set<TEntity>());

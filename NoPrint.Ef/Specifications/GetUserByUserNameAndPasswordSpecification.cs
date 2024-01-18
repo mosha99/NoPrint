@@ -20,6 +20,6 @@ public class GetUserByUserNameAndPasswordSpecification : IBaseGetSpecification<U
     }
     public async Task<UserBase> GetAsync(IQueryable<UserBase> queryable)
     {
-        return await queryable.SingleAsync(x => x.User.Password == _password && x.User.UserName == _userName);
+        return await queryable.SingleOrDefaultAsync(x => x.User.Password == _password && x.User.UserName == _userName);
     }
 }

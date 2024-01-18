@@ -26,4 +26,8 @@ public class UserRepository : RepositoryBase<UserBase, UserId>, IUserRepository
         user.ValidationCheck(x=>x.ExpireDate?.IsExpire() != true, "Error_UserExpire");
     }
 
+    public async Task<bool> AnyExistWithThisUsername(string username)
+    {
+        return await _context.Set<UserBase>().AnyAsync(x => x.User.UserName.Equals(username));
+    }
 }

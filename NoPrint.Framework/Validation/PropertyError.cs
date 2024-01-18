@@ -4,7 +4,14 @@ namespace NoPrint.Framework.Validation;
 
 public class PropertyError : LogicalError
 {
-    public string PropTitle { get; set; }
-    public override string ToJson() => JsonSerializer.Serialize(this);
+    public PropertyError(string propTitle , List<string> errors) : base(errors)
+    {
+        PropTitle = propTitle;
+    }
 
+    public PropertyError()
+    {
+        
+    }
+    public string PropTitle { get; set; }
 }

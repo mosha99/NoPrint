@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NoPrint.Application.Dto;
 using NoPrint.Application.Infra;
 using NoPrint.Framework;
 using NoPrint.Identity.Share;
@@ -8,13 +9,11 @@ namespace NoPrint.Application.CommandsAndQueries.Invoices.Commands;
 [Access(Rule.Shop_User)]
 public class EnterInvoiceCommand : IRequest<long>
 {
-    public ShopId GetShopId() => new ShopId(){Id = ShopId};
-    public long ShopId { set; get; }
     public string CustomerPhoneNumber { set; get; }
     public decimal RawCost{ set; get; }
     public decimal DiscountRate{ set; get; }
     public decimal DiscountFee{ set; get; }
     public decimal FinalCost{ set; get; }
 
-    public List<InvoiceItem> InvoiceItems{ set; get; }
+    public List<InvoiceItemDto> InvoiceItems{ set; get; }
 }

@@ -27,7 +27,7 @@ public class GetTokenForCustomerByUserNameCommandHandlers : IRequestHandler<GetT
     {
         var user = await _repositories.GetRepository<IUserRepository>().GetSingleByCondition(new GetUserByUserNameAndPasswordSpecification(request.UserName, request.Password));
 
-        user.ValidationCheck("UserName", x => x is not null, "Error_Required");
+        user.ValidationCheck("UserName", x => x is not null, "Error_NotFind");
 
         var customer = await _repositories.GetRepository<ICustomerRepository>().GetSingleByCondition(new GetCustomerByUserSpecification(user.Id));
 

@@ -27,7 +27,7 @@ public class GetTokenForShopByUserNameCommandHandlers : IRequestHandler<GetToken
     {
         var user = await _repositories.GetRepository<IUserRepository>().GetSingleByCondition(new GetUserByUserNameAndPasswordSpecification(request.UserName, request.Password));
 
-        user.ValidationCheck("UserName", x => x is not null, "Error_Required");
+        user.ValidationCheck("UserName", x => x is not null, "Error_NotFind");
 
         var shop = await _repositories.GetRepository<IShopRepository>().GetSingleByCondition(new GetShopByUserSpecification(user.Id));
 

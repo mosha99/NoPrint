@@ -15,6 +15,8 @@ using System.Text.Json;
 using NoPrint.Api.Implementation;
 using NoPrint.Customers.Domain.Repository;
 using NoPrint.Notification.Share;
+using NoPrint.Framework.Exceptions;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +50,14 @@ app.MapPost("Commands/{commandName}",
         catch (BadRequestException e)
         {
             return Results.BadRequest(e.Message);
+        }
+        catch (InvalidPropertyException exception)
+        {
+            return Results.UnprocessableEntity(exception.Error);
+        }
+        catch (AggregateInvalidPropertyException exception)
+        {
+            return Results.UnprocessableEntity(exception.Error);
         }
     }
 );

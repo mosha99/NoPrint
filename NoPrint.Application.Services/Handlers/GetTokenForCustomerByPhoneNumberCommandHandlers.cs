@@ -25,9 +25,10 @@ public class GetTokenForCustomerByPhoneNumberCommandHandlers : IRequestHandler<G
 
     public async Task<TokenBehavior> Handle(GetTokenForCustomerByPhoneNumberCommand request, CancellationToken cancellationToken)
     {
-        var customer = await _repositories.GetRepository<ICustomerRepository>().GetSingleByCondition(new GetCustomerByPhoneSpecification(request.PhoneNumber));
+        var customer = await _repositories.GetRepository<ICustomerRepository>()
+            .GetSingleByCondition(new GetCustomerByPhoneSpecification(request.PhoneNumber));
 
-        customer.ValidationCheck("PhoneNumber", x => x is not null, "Error_Required");
+        customer.ValidationCheck("PhoneNumber", x => x is not null, "Error_NotFind");
 
         var user = await _repositories.GetRepository<IUserRepository>().GetByIdAsync(customer.User);
 

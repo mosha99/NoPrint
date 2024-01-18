@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using NoPrint.Application.Infra;
 using NoPrint.Framework;
 
@@ -13,3 +14,4 @@ public class CreateShopCommand : IRequest<long>
     public string PhoneNumber { get; set; }
     public string ShopAddress { get; set; }
 }
+

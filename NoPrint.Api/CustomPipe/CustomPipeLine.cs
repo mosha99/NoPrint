@@ -14,6 +14,7 @@ using NoPrint.Identity.Share;
 using NoPrint.Users.Domain.Repository;
 using Rule = NoPrint.Application.Infra.Rule;
 using NoPrint.Application.CommandsAndQueries.Interfaces;
+using NoPrint.Application.CommandsAndQueries.CommandValidator;
 
 namespace NoPrint.Api.CustomPipe;
 
@@ -24,17 +25,20 @@ public class CustomPipeline
     private readonly IAccessManagerService _accessManagerService;
     private readonly ITokenService _tokenService;
     private readonly IIdentityStorageService _identityStorageService;
+    private readonly IServiceProvider _serviceProvider;
 
     public CustomPipeline(
         ISender sender,
         IAccessManagerService accessManagerService,
         ITokenService tokenService,
-        IIdentityStorageService identityStorageService)
+        IIdentityStorageService identityStorageService,
+        IServiceProvider serviceProvider)
     {
         _sender = sender;
         _accessManagerService = accessManagerService;
         _tokenService = tokenService;
         _identityStorageService = identityStorageService;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task<object?> Execute(string commandName, JsonElement request, HttpRequest httpRequest)
@@ -46,9 +50,10 @@ public class CustomPipeline
 
         var command = CreateCommand(commandName, request);
 
+        await Validate(command, _serviceProvider);
+
         var accessor = typeof(CommandsFlag).Assembly.GetType(commandName)
             .GetCustomAttribute<AccessAttribute>();
-
 
         accessor.ValidationCheck(x => x is not null, "Error_AccessDenied");
 
@@ -74,6 +79,27 @@ public class CustomPipeline
 
     }
 
+    private async Task Validate(object command, IServiceProvider serviceProvider)
+    {
+        var interfaces = command
+             .GetType()
+             .GetInterfaces()
+             .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IValidateAble<>));
+
+
+        foreach (var item in interfaces)
+        {
+            var validatorType = item.GetGenericArguments()[0];
+
+            var validator = ActivatorUtilities.CreateInstance(serviceProvider, validatorType) as ICommandValidator;
+
+            if (validator is null) throw new Exception();
+
+            await validator.Validate(command);
+        }
+
+    }
+
 
     private object CreateCommand(string commandName, JsonElement request)
     {
@@ -81,8 +107,8 @@ public class CustomPipeline
 
         if (commandType == null || !typeof(IBaseRequest).IsAssignableFrom(commandType)) throw new BadRequestException("Error_CommandNotFind");
 
-        if(typeof(IInternalRequest).IsAssignableFrom(commandType) ||
-           commandType.GetInterfaces().Any(x=>x.GetGenericTypeDefinition() == typeof(IInternalRequest<>))) throw new BadRequestException("Error_PrivateCommand");
+        if (typeof(IInternalRequest).IsAssignableFrom(commandType) ||
+           commandType.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IInternalRequest<>))) throw new BadRequestException("Error_PrivateCommand");
 
         object? command = request.Deserialize(commandType);
 

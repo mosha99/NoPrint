@@ -49,9 +49,6 @@ namespace NoPrint.Customers.Domain.Model
         {
             if (FillProfile) throw new InvalidPropertyException(nameof(FillProfile), "Error_CustomerFilledNow");
 
-            customerName.ValidationCheck(nameof(CustomerName), x => x?.Length >= 3, "Error_Length_Min_3");
-            customerAddress.ValidationCheck(nameof(CustomerAddress), x => !string.IsNullOrWhiteSpace(x), "Error_Required");
-
             CustomerName = customerName;
             CustomerAddress = customerAddress;
             FillProfile = true;

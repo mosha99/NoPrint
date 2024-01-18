@@ -11,10 +11,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NoPrint.Application.Dto\NoPrint.Application.Dto.csproj" />
     <ProjectReference Include="..\NoPrint.Application.Infra\NoPrint.Application.Infra.csproj" />
+    <ProjectReference Include="..\NoPrint.Customer.Domain\NoPrint.Customers.Domain.csproj" />
     <ProjectReference Include="..\Noprint.Identity.Share\NoPrint.Identity.Share.csproj" />
     <ProjectReference Include="..\NoPrint.Invoice.Domain\NoPrint.Invoices.Domain.csproj" />
     <ProjectReference Include="..\NoPrint.Shop.Domein\NoPrint.Shops.Domain.csproj" />
+    <ProjectReference Include="..\NoPrint.Users.Domain\NoPrint.Users.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Customer\Validators\" />
   </ItemGroup>
 
 </Project>

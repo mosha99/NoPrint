@@ -2,6 +2,7 @@
 using NoPrint.Application.CommandsAndQueries.Shop.Commands;
 using NoPrint.Application.Ef;
 using NoPrint.Ef;
+using NoPrint.Framework.Validation;
 using NoPrint.Identity.Share;
 using NoPrint.Shops.Domain.Models;
 using NoPrint.Shops.Domain.Repository;
@@ -23,6 +24,12 @@ public class CreateShopCommandHandlers : IRequestHandler<CreateShopCommand, long
 
     public async Task<long> Handle(CreateShopCommand request, CancellationToken cancellationToken)
     {
+
+        var findUser = !await _repositories.GetRepository<IUserRepository>()
+            .AnyExistWithThisUsername(request.UserName);
+
+        findUser.TrueCheck("Username", "Error_UsernameIsUniq");
+
         var user = UserBase.CreateInstance(new UserExpireDate(null));
 
         user.SetUser(User.CreateInstance(request.UserName, request.Password));
