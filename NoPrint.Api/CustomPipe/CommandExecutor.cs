@@ -15,10 +15,11 @@ using NoPrint.Users.Domain.Repository;
 using Rule = NoPrint.Application.Infra.Rule;
 using NoPrint.Application.CommandsAndQueries.Interfaces;
 using NoPrint.Application.CommandsAndQueries.CommandValidator;
+using NoPrint.Framework.Exceptions;
 
 namespace NoPrint.Api.CustomPipe;
 
-public class CustomPipeline
+public class CommandExecutor
 {
 
     private readonly ISender _sender;
@@ -27,7 +28,7 @@ public class CustomPipeline
     private readonly IIdentityStorageService _identityStorageService;
     private readonly IServiceProvider _serviceProvider;
 
-    public CustomPipeline(
+    public CommandExecutor(
         ISender sender,
         IAccessManagerService accessManagerService,
         ITokenService tokenService,
@@ -52,33 +53,43 @@ public class CustomPipeline
 
         await Validate(command, _serviceProvider);
 
-        var accessor = typeof(CommandsFlag).Assembly.GetType(commandName)
-            .GetCustomAttribute<AccessAttribute>();
-
-        accessor.ValidationCheck(x => x is not null, "Error_AccessDenied");
-
-        if (accessor?.Accessors?.Any(x => x == Rule.NonAuthorize) != true)
-        {
-            if (httpRequest.Headers.TryGetValue("aut", out StringValues token))
-            {
-                var userId = _tokenService.ValidateToken(token, out Rule rule, out Guid key);
-
-                await _sender.Send(new CheckUserLoginIdCommand(userId, key));
-
-                _identityStorageService.SetIdentityItem("UserId", userId);
-
-                _identityStorageService.SetIdentityItem("Rule", rule);
-
-                _accessManagerService.AccessToSend(command);
-
-            }
-            else throw new AuthenticationException();
-        }
+        await Authenticate(commandName, httpRequest, command);
 
         return await _sender.Send(command);
 
     }
+    private async Task Authenticate(string commandName, HttpRequest httpRequest, object command)
+    {
+        try
+        {
+            var accessor = typeof(CommandsFlag).Assembly.GetType(commandName)
+                .GetCustomAttribute<AccessAttribute>();
 
+            accessor.ValidationCheck(x => x is not null, "Error_AccessDenied");
+
+            if (accessor?.Accessors?.Any(x => x == Rule.NonAuthorize) != true)
+            {
+                if (httpRequest.Headers.TryGetValue("aut", out StringValues token))
+                {
+                    var userId = _tokenService.ValidateToken(token, out Rule rule, out Guid key);
+
+                    await _sender.Send(new CheckUserLoginIdQuery(userId, key));
+
+                    _identityStorageService.SetIdentityItem("UserId", userId);
+
+                    _identityStorageService.SetIdentityItem("Rule", rule);
+
+                    _accessManagerService.AccessToSend(command);
+                }
+                else throw new AuthenticationException();
+            }
+        }
+        catch (Exception e)
+        {
+            throw new AuthenticationException();
+        }
+
+    }
     private async Task Validate(object command, IServiceProvider serviceProvider)
     {
         var interfaces = command
@@ -99,8 +110,6 @@ public class CustomPipeline
         }
 
     }
-
-
     private object CreateCommand(string commandName, JsonElement request)
     {
         var commandType = typeof(CommandsFlag).Assembly.GetType(commandName);

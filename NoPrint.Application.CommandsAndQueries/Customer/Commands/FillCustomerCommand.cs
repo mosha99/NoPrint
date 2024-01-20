@@ -6,7 +6,7 @@ using NoPrint.Framework;
 using NoPrint.Identity.Share;
 
 namespace NoPrint.Application.CommandsAndQueries.Customer.Commands;
-[Access(Rule.NonAuthorize)]
+[Access(Rule.Customer_Visitor)]
 public class FillCustomerCommand : IRequest<long> , IValidateAble<FillCustomerCommandValidator>
 {
     public long CustomerId { get; set; }

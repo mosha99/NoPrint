@@ -9,11 +9,11 @@ namespace NoPrint.Application.CommandsAndQueries.Invoices.Commands;
 [Access(Rule.Shop_User)]
 public class EnterInvoiceCommand : IRequest<long>
 {
-    public string CustomerPhoneNumber { set; get; }
+    public string? CustomerPhoneNumber { set; get; }
     public decimal RawCost{ set; get; }
     public decimal DiscountRate{ set; get; }
     public decimal DiscountFee{ set; get; }
     public decimal FinalCost{ set; get; }
 
-    public List<InvoiceItemDto> InvoiceItems{ set; get; }
+    public List<InvoiceItemDto>? InvoiceItems{ set; get; }
 }

@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NoPrint.Customer.Domain\NoPrint.Customers.Domain.csproj" />
     <ProjectReference Include="..\NoPrint.Invoice.Domain\NoPrint.Invoices.Domain.csproj" />
+    <ProjectReference Include="..\NoPrint.Shop.Domein\NoPrint.Shops.Domain.csproj" />
   </ItemGroup>
 
 </Project>

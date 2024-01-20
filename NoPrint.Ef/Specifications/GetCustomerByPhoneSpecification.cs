@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NoPrint.Application.Infra;
 using NoPrint.Customers.Domain.Model;
 using NoPrint.Framework.Specification;
 using NoPrint.Framework.Validation;
@@ -20,3 +21,16 @@ public class GetCustomerByPhoneSpecification : IBaseGetSpecification<Customer>
     }
 }
 
+public class GetCustomerByPartOfPhoneSpecification : IBaseGetListSpecification<Customer>
+{
+    private readonly string _phone;
+
+    public GetCustomerByPartOfPhoneSpecification(string phone)
+    {
+        _phone = phone;
+    }
+    public async Task<ListResult<Customer>> GetAllAsync(IQueryable<Customer> queryable)
+    {
+        return new(await queryable.Where(x => x.PhoneNumber.Contains(_phone)).ToListAsync());
+    }
+}

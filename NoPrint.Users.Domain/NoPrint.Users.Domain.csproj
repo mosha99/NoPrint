@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NoPrint.Framework\NoPrint.Framework.csproj" />
     <ProjectReference Include="..\Noprint.Identity.Share\NoPrint.Identity.Share.csproj" />
+    <ProjectReference Include="..\NoPrint.Invoice.Domain\NoPrint.Invoices.Domain.csproj" />
     <ProjectReference Include="..\NoPrint.Notification.Domain\NoPrint.Notification.Share.csproj" />
     <ProjectReference Include="..\NoPrint.User.Service\NoPrint.Users.Share.csproj" />
   </ItemGroup>

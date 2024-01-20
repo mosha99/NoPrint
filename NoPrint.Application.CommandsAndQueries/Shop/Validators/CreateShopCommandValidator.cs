@@ -1,19 +1,20 @@
 ﻿using NoPrint.Application.CommandsAndQueries.CommandValidator;
 using NoPrint.Application.CommandsAndQueries.Customer.Commands;
+using NoPrint.Application.CommandsAndQueries.Shop.Commands;
 using NoPrint.Customers.Domain.Repository;
 using NoPrint.Framework.Exceptions;
 using NoPrint.Framework.Validation;
 using NoPrint.Identity.Share;
 using NoPrint.Users.Domain.Repository;
 
-namespace NoPrint.Application.CommandsAndQueries.Customer.Validators;
+namespace NoPrint.Application.CommandsAndQueries.Shop.Validators;
 
-public class FillCustomerCommandValidator : ICommandValidator<FillCustomerCommand>
+public class CreateShopCommandValidator : ICommandValidator<CreateShopCommand>
 {
     private readonly IUserRepository _userRepository;
     private readonly ICustomerRepository _customerRepository;
 
-    public FillCustomerCommandValidator(IUserRepository userRepository, ICustomerRepository customerRepository)
+    public CreateShopCommandValidator(IUserRepository userRepository , ICustomerRepository customerRepository)
     {
         _userRepository = userRepository;
         _customerRepository = customerRepository;
@@ -22,17 +23,20 @@ public class FillCustomerCommandValidator : ICommandValidator<FillCustomerComman
 
     public List<LogicalError> Errors { get; set; }
 
-    public async Task Validate(FillCustomerCommand command)
+    public async Task Validate(CreateShopCommand command)
     {
-        command.CustomerName.Validate(x => x?.Length >= 3)
-            .WithName(nameof(command.CustomerName))
-            .WithError("Error_Length_Min_3")
-            .AddToList(Errors);
 
-        command.CustomerAddress.Validate(x => !string.IsNullOrWhiteSpace(x))
-            .WithName(nameof(command.CustomerAddress))
+        command.ShopName.Validate( x => x?.Length >= 3)
+            .WithError("Error_Length_Min_3")
+            .WithName(nameof(command.ShopName));
+
+        command.PhoneNumber.Validate( x => x?.Length == 11)
+            .WithError("Error_Length_Eql_11")
+            .WithName(nameof(command.PhoneNumber));
+
+        command.ShopAddress.Validate(x => !string.IsNullOrWhiteSpace(x))
             .WithError("Error_Required")
-            .AddToList(Errors);
+            .WithName(nameof(command.ShopAddress));
 
         command.UserName.Validate(x => x?.Length >= 5)
             .WithName(nameof(command.UserName))
@@ -53,12 +57,6 @@ public class FillCustomerCommandValidator : ICommandValidator<FillCustomerComman
              .WithError("Error_UserNameUniq")
              .AddToListAsync(Errors);
 
-
-        await command.GetCustomerId()
-            .ValidateAsync(async x => await FindCustomer(x))
-             .WithName(nameof(command.CustomerId))
-             .WithError("Error_CustomerNotFind")
-             .AddToListAsync(Errors);
 
 
         if (Errors.Any()) throw new AggregateInvalidPropertyException(Errors);

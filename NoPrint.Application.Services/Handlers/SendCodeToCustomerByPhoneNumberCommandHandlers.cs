@@ -28,8 +28,10 @@ public class SendCodeToCustomerByPhoneNumberCommandHandlers : IRequestHandler<Se
 
         customer.ValidationCheck("PhoneNumber", x => x is not null, "Error_Required");
 
-        var user = await _repositories.GetRepository<IUserRepository>().GetByIdAsync(customer.User);
+        var user = await _repositories.GetRepository<IUserRepository>().GetByIdAsync(customer.User,true);
 
         user.SendCode(customer, _senderService);
+
+        await _repositories.SaveChangeAsync();
     }
 }

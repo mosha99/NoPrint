@@ -1,6 +1,8 @@
-﻿namespace NoPrint.Framework.Specification;
+﻿using NoPrint.Application.Infra;
+
+namespace NoPrint.Framework.Specification;
 
 public interface IBaseGetListSpecification<T>
 {
-    public Task<List<T>> GetAllAsync(IQueryable<T> queryable);
+    public Task<ListResult<T>> GetAllAsync(IQueryable<T> queryable);
 }

@@ -1,6 +1,8 @@
-﻿namespace NoPrint.Api.CustomPipe;
+﻿using NoPrint.Framework.Exceptions;
 
-public class BadRequestException : Exception
+namespace NoPrint.Api.CustomPipe;
+
+public class BadRequestException : Exception 
 {
     public BadRequestException()
     {

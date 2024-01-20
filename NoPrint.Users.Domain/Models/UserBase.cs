@@ -13,7 +13,7 @@ public class UserBase : Aggregate<UserId>
 {
     private UserBase()
     {
-
+        
     }
 
     public static UserBase CreateInstance(UserExpireDate expireDate)

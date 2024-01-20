@@ -2,7 +2,7 @@
 
 namespace NoPrint.Application.Dto
 {
-    public class InvoiceItemDto : IDto<InvoiceItem>
+    public class InvoiceItemDto 
     {
         public string ProductName { get; set; }
         public string ProductCode { get; set; }
@@ -18,16 +18,21 @@ namespace NoPrint.Application.Dto
             return InvoiceItem.CreateInstance(ProductName, ProductCode, Count, Price, RawFee, DiscountRate, DiscountFee, FinalFee);
         }
 
-        public void FillFromModel(InvoiceItem model)
+        public static InvoiceItemDto FromModel(InvoiceItem model)
         {
-            ProductName = model.ProductName;
-            ProductCode = model.ProductCode;
-            Count = model.Count;
-            Price = model.Price;
-            RawFee = model.RawFee;
-            DiscountRate = model.DiscountRate;
-            DiscountFee = model.DiscountFee;
-            FinalFee = model.FinalFee;
+            var itemDto= new InvoiceItemDto
+            {
+                ProductName = model.ProductName,
+                ProductCode = model.ProductCode,
+                Count = model.Count,
+                Price = model.Price,
+                RawFee = model.RawFee,
+                DiscountRate = model.DiscountRate,
+                DiscountFee = model.DiscountFee,
+                FinalFee = model.FinalFee
+            };
+
+            return itemDto;
         }
     }
 }

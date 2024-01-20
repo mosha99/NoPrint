@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NoPrint.Application.Infra;
 using NoPrint.Framework;
 using NoPrint.Framework.Identity;
 using NoPrint.Framework.Specification;
@@ -42,14 +43,14 @@ public abstract class RepositoryBase<TEntity, TId> : IRepositoryBase<TEntity, TI
     public Guid GetDbContextId() => _context.ContextId.InstanceId;
     public async Task<TEntity> GetByIdAsync(TId Id, bool track = false)
     {
-        if (!track) return await _context.Set<TEntity>().AsNoTracking().SingleAsync(x => x._Id == Id.Id);
+        //if (!track) return await _context.Set<TEntity>().AsNoTracking().SingleAsync(x => x._Id == Id.Id);
         return await _context.Set<TEntity>().SingleAsync(x => x._Id == Id.Id);
     }
     public async Task<TEntity> GetSingleByCondition(IBaseGetSpecification<TEntity> specification)
     {
         return await specification.GetAsync(_context.Set<TEntity>());
     }
-    public async Task<List<TEntity>> GetAllByCondition(IBaseGetListSpecification<TEntity> specification)
+    public async Task<ListResult<TEntity>> GetAllByCondition(IBaseGetListSpecification<TEntity> specification)
     {
         return await specification.GetAllAsync(_context.Set<TEntity>());
     }

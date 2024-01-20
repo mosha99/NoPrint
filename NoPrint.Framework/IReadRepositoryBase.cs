@@ -1,4 +1,5 @@
-﻿using NoPrint.Framework.Identity;
+﻿using NoPrint.Application.Infra;
+using NoPrint.Framework.Identity;
 using NoPrint.Framework.Specification;
 
 namespace NoPrint.Framework;
@@ -9,5 +10,5 @@ public interface IReadRepositoryBase<T, Y>
 {
     public Task<T> GetByIdAsync(Y shopId, bool track = false);
     public Task<T?> GetSingleByCondition(IBaseGetSpecification<T> specification);
-    public Task<List<T>> GetAllByCondition(IBaseGetListSpecification<T> specification);
+    public Task<ListResult<T>> GetAllByCondition(IBaseGetListSpecification<T> specification);
 }

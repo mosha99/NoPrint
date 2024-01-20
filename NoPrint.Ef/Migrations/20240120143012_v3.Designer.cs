@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NoPrint.Application.Ef;
 
@@ -11,9 +12,11 @@ using NoPrint.Application.Ef;
 namespace NoPrint.Ef.Migrations
 {
     [DbContext(typeof(NoPrintContext))]
-    partial class NoPrintContextModelSnapshot : ModelSnapshot
+    [Migration("20240120143012_v3")]
+    partial class v3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

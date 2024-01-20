@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NoPrint.Application.Infra;
 using NoPrint.Framework.Specification;
 using NoPrint.Framework.Validation;
 using NoPrint.Identity.Share;
@@ -16,8 +17,8 @@ public class GetInvoiceByShopSpecification : IBaseGetListSpecification<Invoice>
         _shopId = shopId;
     }
 
-    public async Task<List<Invoice>> GetAllAsync(IQueryable<Invoice> queryable)
+    public async Task<ListResult<Invoice>> GetAllAsync(IQueryable<Invoice> queryable)
     {
-        return await queryable.AsNoTracking().Where(x => x.Shop.Id == _shopId.Id).ToListAsync();
+        return new (await queryable.AsNoTracking().Where(x => x.Shop.Id == _shopId.Id).ToListAsync());
     }
 }

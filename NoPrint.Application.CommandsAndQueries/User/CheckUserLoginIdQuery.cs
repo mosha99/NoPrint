@@ -4,9 +4,9 @@ using NoPrint.Identity.Share;
 
 namespace NoPrint.Application.CommandsAndQueries.User;
 
-public class CheckUserLoginIdCommand: IInternalRequest
+public class CheckUserLoginIdQuery: IInternalRequest
 {
-    public CheckUserLoginIdCommand(UserId userId,Guid loginId) 
+    public CheckUserLoginIdQuery(UserId userId,Guid loginId) 
     {
         LoginId = loginId;
         UserId = userId;

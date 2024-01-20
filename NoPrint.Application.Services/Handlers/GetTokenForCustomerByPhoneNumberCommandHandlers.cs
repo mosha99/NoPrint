@@ -30,7 +30,7 @@ public class GetTokenForCustomerByPhoneNumberCommandHandlers : IRequestHandler<G
 
         customer.ValidationCheck("PhoneNumber", x => x is not null, "Error_NotFind");
 
-        var user = await _repositories.GetRepository<IUserRepository>().GetByIdAsync(customer.User);
+        var user = await _repositories.GetRepository<IUserRepository>().GetByIdAsync(customer.User,true);
 
        var loginId = user.LoginByPhone(customer, request.Code);
 
