@@ -9,31 +9,34 @@ using System.Text;
 using NoPrint.Users.Domain.Tools;
 using System.Security.Cryptography;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace NoPrint.Api.Implementation;
 
 public class TokenService : ITokenService
 {
-    public string Key { get; set; }
-    public string Issuer { get; set; }
-    public string Audience { get; set; }
-    public string EnKey { get; set; }
+    public string Key { get; private set; }
+    public string Issuer { get; private set; }
+    public string Audience { get; private set; }
+    public string EnKey { get; private set; }
+    public int ExpireMin { get; private set; }
+
 
     public const string cg = "skjdSDFGHhfds&#$fhsvh6354";
     public const string te = "kdh#$d%asc3254ujs353sfsSH";
-    public TokenService(IConfiguration configuration)
+    public TokenService(IConfigurationGetter configuration)
     {
-        var section = configuration.GetSection("Aut");
-        Key = section["key"];
-        Issuer = section["issuer"];
-        Audience = section["audience"];
-        EnKey = section["enKey"];
+        Key = configuration.Getkey();
+        Issuer = configuration.GetIssuer();
+        Audience = configuration.GetAudience();
+        EnKey = configuration.GetEnKey();
+        ExpireMin = configuration.GetTokenExpireMin();
     }
     public TokenBehavior GenerateToken(UserId userId, Guid loginId, Rule rule)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Key));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-        var expireDate = DateTime.UtcNow.AddHours(1);
+        var expireDate = DateTime.Now.AddMinutes(ExpireMin);
 
 
         var claimGroup = new ClaimGroup()
@@ -100,7 +103,7 @@ public class TokenService : ITokenService
     {
         return new TokenValidationParameters()
         {
-            ValidateLifetime = false, // Because there is no expiration in the generated token
+            ValidateLifetime = true, // Because there is no expiration in the generated token
             ValidateAudience = false, // Because there is no audiance in the generated token
             ValidateIssuer = false,   // Because there is no issuer in the generated token
             ValidIssuer = Issuer,
@@ -156,3 +159,4 @@ public class TokenService : ITokenService
         return cipherText;
     }
 }
+

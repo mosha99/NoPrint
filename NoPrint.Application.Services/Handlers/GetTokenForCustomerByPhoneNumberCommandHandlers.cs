@@ -15,12 +15,20 @@ public class GetTokenForCustomerByPhoneNumberCommandHandlers : IRequestHandler<G
 {
     private readonly UnitRepositories _repositories;
     private readonly ITokenService _tokenService;
+    private readonly IIdentityStorageService _identityStorageService;
+    private readonly IConfigurationGetter _configurationGetter;
 
 
-    public GetTokenForCustomerByPhoneNumberCommandHandlers(UnitRepositories repositories, ITokenService tokenService)
+    public GetTokenForCustomerByPhoneNumberCommandHandlers(
+        UnitRepositories repositories,
+        ITokenService tokenService,
+        IIdentityStorageService identityStorageService ,
+        IConfigurationGetter configurationGetter)
     {
         _repositories = repositories;
         _tokenService = tokenService;
+        _identityStorageService = identityStorageService;
+        _configurationGetter = configurationGetter;
     }
 
     public async Task<TokenBehavior> Handle(GetTokenForCustomerByPhoneNumberCommand request, CancellationToken cancellationToken)
@@ -30,12 +38,16 @@ public class GetTokenForCustomerByPhoneNumberCommandHandlers : IRequestHandler<G
 
         customer.ValidationCheck("PhoneNumber", x => x is not null, "Error_NotFind");
 
-        var user = await _repositories.GetRepository<IUserRepository>().GetByIdAsync(customer.User,true);
+        var user = await _repositories.GetRepository<IUserRepository>().GetByIdAsync(customer.User, true);
 
-       var loginId = user.LoginByPhone(customer, request.Code);
+        var deviceInfo = _identityStorageService.GetIdentityItem<string>("User-Agent");
+
+        var em = _configurationGetter.GetTokenExpireMin();
+
+        var loginId = user.LoginByPhone(customer, request.Code, deviceInfo,em);
 
         await _repositories.SaveChangeAsync();
 
-        return _tokenService.GenerateToken(user.Id,loginId, Rule.Customer_Visitor);
+        return _tokenService.GenerateToken(user.Id, loginId, Rule.Customer_Visitor);
     }
 }

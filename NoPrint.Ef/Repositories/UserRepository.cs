@@ -13,17 +13,24 @@ public class UserRepository : RepositoryBase<UserBase, UserId>, IUserRepository
     {
     }
 
-    public async Task CheckUserLogin(UserId userId, Guid loginId)
+    public async Task<Guid> CheckUserLogin(UserId userId, Guid loginId , bool simpleMode = false)
     {
         var user = await _context.Set<UserBase>().SingleOrDefaultAsync(x => x._Id == userId.Id);
 
         user.ValidationCheck(x => x is not null, "Error_UserNotFind");
 
-        user.ValidationCheck(x => x.LoginId.Equals(loginId), "Error_TokenInvalid");
+        var loginInstance = user.LoginInstances.SingleOrDefault(x => x.LoginId.Equals(loginId));
 
-        user.ValidationCheck(x=>x.CanLogin, "Error_UserCanNotLogin");
+        loginInstance.ValidationCheck(x => x is not null, "Error_TokenInvalid");
 
-        user.ValidationCheck(x=>x.ExpireDate?.IsExpire() != true, "Error_UserExpire");
+        loginInstance.ValidationCheck(x => !x.ExpireDate.IsExpire(), "Error_TokenInvalid");
+
+        user.ValidationCheck(x => x.CanLogin, "Error_UserCanNotLogin");
+
+        user.ValidationCheck(x => x.ExpireDate?.IsExpire() != true, "Error_UserExpire");
+
+        return loginInstance.Next(simpleMode);
+
     }
 
     public async Task<bool> AnyExistWithThisUsername(string username)

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NoPrint.Application.Ef;
 
@@ -11,9 +12,11 @@ using NoPrint.Application.Ef;
 namespace NoPrint.Ef.Migrations
 {
     [DbContext(typeof(NoPrintContext))]
-    partial class NoPrintContextModelSnapshot : ModelSnapshot
+    [Migration("20240121113848_v4")]
+    partial class v4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,22 +259,6 @@ namespace NoPrint.Ef.Migrations
 
             modelBuilder.Entity("NoPrint.Users.Domain.Models.UserBase", b =>
                 {
-                    b.OwnsOne("NoPrint.Users.Domain.ValueObjects.UserExpireDate", "ExpireDate", b1 =>
-                        {
-                            b1.Property<long>("UserBase_Id")
-                                .HasColumnType("bigint");
-
-                            b1.Property<DateTime?>("ExpireDate")
-                                .HasColumnType("datetime2");
-
-                            b1.HasKey("UserBase_Id");
-
-                            b1.ToTable("Users");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserBase_Id");
-                        });
-
                     b.OwnsMany("NoPrint.Users.Domain.ValueObjects.LoginInstance", "LoginInstances", b1 =>
                         {
                             b1.Property<long>("UserBase_Id")
@@ -362,9 +349,6 @@ namespace NoPrint.Ef.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UserBase_Id");
                         });
-
-                    b.Navigation("ExpireDate")
-                        .IsRequired();
 
                     b.Navigation("LoginInstances");
 

@@ -8,6 +8,6 @@ namespace NoPrint.Users.Domain.Repository;
 
 public interface IUserRepository : IRepositoryBase<UserBase, UserId>
 {
-    public Task CheckUserLogin(UserId userId, Guid loginId);
+    public Task<Guid> CheckUserLogin(UserId userId, Guid loginId, bool simpleMode = false);
     public Task<bool> AnyExistWithThisUsername(string username);
 }

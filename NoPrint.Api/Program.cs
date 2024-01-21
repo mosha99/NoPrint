@@ -31,6 +31,7 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IInvoicesRepository, InvoicesRepository>();
 
 
+builder.Services.AddScoped<IConfigurationGetter, ConfigurationGetter>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAccessManagerService, AccessManagerService>();
 builder.Services.AddScoped<IIdentityStorageService, IdentityStorageService>();

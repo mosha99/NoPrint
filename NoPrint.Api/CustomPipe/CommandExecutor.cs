@@ -62,6 +62,11 @@ public class CommandExecutor
     {
         try
         {
+            if (httpRequest.Headers.TryGetValue("User-Agent", out StringValues userAgent))
+            {
+                _identityStorageService.SetIdentityItem("User-Agent", userAgent);
+            }
+
             var accessor = typeof(CommandsFlag).Assembly.GetType(commandName)
                 .GetCustomAttribute<AccessAttribute>();
 
@@ -73,7 +78,13 @@ public class CommandExecutor
                 {
                     var userId = _tokenService.ValidateToken(token, out Rule rule, out Guid key);
 
-                    await _sender.Send(new CheckUserLoginIdQuery(userId, key));
+                    var newGuid = await _sender.Send(new CheckUserLoginIdQuery(userId, key));
+
+                    var newToken = _tokenService.GenerateToken(userId, newGuid, rule);
+
+                    httpRequest.HttpContext.Response.Headers.Add("NewKey", newToken.Token);
+
+                    httpRequest.HttpContext.Response.Headers.Add("NewKeyExpireDate", newToken.ExpireTime.ToString());
 
                     _identityStorageService.SetIdentityItem("UserId", userId);
 
@@ -83,6 +94,10 @@ public class CommandExecutor
                 }
                 else throw new AuthenticationException();
             }
+        }
+        catch (InvalidPropertyException e)
+        {
+            throw e;
         }
         catch (Exception e)
         {

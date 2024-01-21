@@ -7,6 +7,7 @@ using NoPrint.Invoices.Domain.Models;
 using NoPrint.Invoices.Domain.ValueObjects;
 using NoPrint.Shops.Domain.Models;
 using NoPrint.Users.Domain.Models;
+using NoPrint.Users.Domain.ValueObjects;
 
 namespace NoPrint.Application.Ef;
 
@@ -24,7 +25,7 @@ public class NoPrintContext : DbContext
 
     public NoPrintContext()
     {
-        
+
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -46,10 +47,14 @@ public class NoPrintContext : DbContext
         modelBuilder.Entity<Customer>().OwnsOne(x => x.User);
         modelBuilder.Entity<UserBase>(o =>
         {
+            o.OwnsMany(x => x.LoginInstances).OwnsOne(x => x.ExpireDate);
             o.OwnsOne(x => x.ExpireDate);
             o.OwnsOne(x => x.User).ToTable("Users_up");
             o.OwnsOne(x => x.Visitor).ToTable("Visitors");
         });
+
+
+
         modelBuilder.Entity<Invoice>(o =>
         {
             o.OwnsOne(x => x.Customer);

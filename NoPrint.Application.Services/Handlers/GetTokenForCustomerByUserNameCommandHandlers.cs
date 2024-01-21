@@ -15,12 +15,19 @@ public class GetTokenForCustomerByUserNameCommandHandlers : IRequestHandler<GetT
 {
     private readonly UnitRepositories _repositories;
     private readonly ITokenService _tokenService;
+    private readonly IIdentityStorageService _identityStorageService;
+    private readonly IConfigurationGetter _configurationGetter;
 
 
-    public GetTokenForCustomerByUserNameCommandHandlers(UnitRepositories repositories, ITokenService tokenService)
+    public GetTokenForCustomerByUserNameCommandHandlers(
+        UnitRepositories repositories,
+        ITokenService tokenService,
+        IIdentityStorageService identityStorageService , IConfigurationGetter configurationGetter)
     {
         _repositories = repositories;
         _tokenService = tokenService;
+        _identityStorageService = identityStorageService;
+        _configurationGetter = configurationGetter;
     }
 
     public async Task<TokenBehavior> Handle(GetTokenForCustomerByUserNameCommand request, CancellationToken cancellationToken)
@@ -33,7 +40,11 @@ public class GetTokenForCustomerByUserNameCommandHandlers : IRequestHandler<GetT
 
         customer.ValidationCheck("Customer",x => x is not null, "Error_NotFind");
 
-        var loginId = user.LoginByUserName();
+        var deviceInfo = _identityStorageService.GetIdentityItem<string>("User-Agent");
+
+        var em = _configurationGetter.GetTokenExpireMin();
+
+        var loginId = user.LoginByUserName(deviceInfo,em);
 
         await _repositories.SaveChangeAsync();
 
