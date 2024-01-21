@@ -8,5 +8,6 @@ public interface IConfigurationGetter
     public string GetEnKey();
     public bool GetIsTokenAdvanceMode();
     public int GetTokenExpireMin();
+    public string GetUrl();
 
 }

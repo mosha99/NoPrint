@@ -53,5 +53,7 @@ namespace NoPrint.Customers.Domain.Model
             CustomerAddress = customerAddress;
             FillProfile = true;
         }
+
+        public string GetNameOrPhone() => CustomerName ?? PhoneNumber;
     }
 }

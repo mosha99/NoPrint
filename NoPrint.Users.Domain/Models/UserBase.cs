@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using NoPrint.Framework;
 using NoPrint.Framework.Exceptions;
 using NoPrint.Framework.Validation;

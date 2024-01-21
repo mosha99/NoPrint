@@ -12,7 +12,7 @@ public class CheckUserLoginIdCommandHandlers : IRequestHandler<CheckUserLoginIdQ
     private readonly IConfigurationGetter _configurationGetter;
 
 
-    public CheckUserLoginIdCommandHandlers(IUserRepository userRepository , IConfigurationGetter configurationGetter)
+    public CheckUserLoginIdCommandHandlers(IUserRepository userRepository, IConfigurationGetter configurationGetter)
     {
         _userRepository = userRepository;
         _configurationGetter = configurationGetter;
@@ -21,7 +21,7 @@ public class CheckUserLoginIdCommandHandlers : IRequestHandler<CheckUserLoginIdQ
     public async Task<Guid> Handle(CheckUserLoginIdQuery request, CancellationToken cancellationToken)
     {
         var simpleMode = !_configurationGetter.GetIsTokenAdvanceMode();
-        var id = await _userRepository.CheckUserLogin(request.UserId, request.LoginId ,simpleMode );
+        var id = await _userRepository.CheckUserLogin(request.UserId, request.LoginId, simpleMode);
         await _userRepository.Save();
         return id;
     }

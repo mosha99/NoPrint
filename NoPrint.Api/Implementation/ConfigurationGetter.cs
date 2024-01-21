@@ -1,4 +1,5 @@
-﻿using NoPrint.Application.Infra;
+﻿using Microsoft.Extensions.Configuration;
+using NoPrint.Application.Infra;
 
 namespace NoPrint.Api.Implementation;
 
@@ -17,4 +18,5 @@ public class ConfigurationGetter : IConfigurationGetter
     public string GetEnKey()=>AuthSection["enKey"];
     public bool GetIsTokenAdvanceMode()=> _configuration.GetValue<bool>("tokenAdvanceMode");
     public int GetTokenExpireMin() => _configuration.GetValue<int>("tokenExpireMin");
+    public string GetUrl() => _configuration.GetValue<string>("appUrl");
 }

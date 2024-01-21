@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NoPrint.Application.CommandsAndQueries.Customer.Notifications;
 using NoPrint.Application.CommandsAndQueries.Invoices.Commands;
 using NoPrint.Application.Ef;
 using NoPrint.Application.Ef.Repositories;
@@ -21,12 +22,14 @@ public class EnterInvoiceCommandHandlers : IRequestHandler<EnterInvoiceCommand, 
 {
     private readonly UnitRepositories _repositories;
     private readonly IIdentityStorageService _identityStorageService;
+    private readonly IPublisher _publisher;
 
 
-    public EnterInvoiceCommandHandlers(UnitRepositories repositories, IIdentityStorageService identityStorageService)
+    public EnterInvoiceCommandHandlers(UnitRepositories repositories, IIdentityStorageService identityStorageService, IPublisher publisher)
     {
         _repositories = repositories;
         _identityStorageService = identityStorageService;
+        _publisher = publisher;
     }
 
     public async Task<long> Handle(EnterInvoiceCommand request, CancellationToken cancellationToken)
@@ -49,11 +52,13 @@ public class EnterInvoiceCommandHandlers : IRequestHandler<EnterInvoiceCommand, 
 
         var items = request.InvoiceItems.Select(x => x.ToModel()).ToList();
 
-        var invoice = Invoice.Create(customer.Id, shop.Id , request.RawCost, request.DiscountRate, request.DiscountFee, request.FinalCost, items);
+        var invoice = Invoice.Create(customer.Id, shop.Id, request.RawCost, request.DiscountRate, request.DiscountFee, request.FinalCost, items);
 
         var invoiceId = await _repositories.GetRepository<IInvoicesRepository>().AddAsync(invoice);
 
         await _repositories.SaveChangeAsync();
+
+        await _publisher.Publish(new InvoiceAddNotification(invoiceId, invoice.FinalCost, customer.Id), cancellationToken);
 
         return invoiceId.Id;
 
