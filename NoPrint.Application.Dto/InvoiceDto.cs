@@ -10,24 +10,26 @@ namespace NoPrint.Application.Dto;
 public class InvoiceDto 
 {
 
-    public long InvoiceId { get; private set; }
+    public long InvoiceId { get; set; }
 
-    public string ShopName { get; private set; }
-    public string CustomerName { get; private set; }
-    public string CustomerPhoneNumber { get; private set; }
+    public string ShopName { get; set; }
+    public string PhoneNumber { get; set; }
+    public string CustomerName { get; set; }
+    public string CustomerPhoneNumber { get; set; }
 
     public List<InvoiceItemDto> Items { get; set; }
-    public decimal RawCost { get; private set; }
-    public decimal DiscountRate { get; private set; }
-    public decimal DiscountFee { get; private set; }
-    public decimal FinalCost { get; private set; }
+    public decimal RawCost { get; set; }
+    public decimal DiscountRate { get; set; }
+    public decimal DiscountFee { get; set; }
+    public decimal FinalCost { get; set; }
 
+    public DateTime EnterDateTime { get; set; }
 
     public static async Task<InvoiceDto> FromModel(Invoice model , ICustomerRepository customerRepository , IShopRepository shopRepository)
     {
         var customer = await customerRepository.GetByIdAsync(model.Customer);
         var shop = await shopRepository.GetByIdAsync(model.Shop);
-
+        
         return new InvoiceDto()
         {
             DiscountFee = model.DiscountFee,
@@ -39,6 +41,8 @@ public class InvoiceDto
             CustomerName = customer.CustomerName,
             CustomerPhoneNumber = customer.PhoneNumber,
             ShopName = shop.ShopName,
+            PhoneNumber = shop.PhoneNumber,
+            EnterDateTime = model.EnterDateTime,
         };
     }
 }

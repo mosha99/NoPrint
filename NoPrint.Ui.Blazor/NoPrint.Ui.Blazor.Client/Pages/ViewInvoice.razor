@@ -1,0 +1,134 @@
+﻿@using NoPrint.Invoices.Domain.Models
+@using NoPrint.Application.Dto
+@rendermode InteractiveServer
+
+@page "/viewInvoice/{invoiceId}"
+
+<div class="container-fluid" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col text-center">
+            <h2 style="/*margin-top: 25px;*/">صورت حساب فروش کالا / خدمات</h2>
+        </div>
+    </div>
+    <hr>
+    <div class="row info-row" style="margin-top: 20px;padding: 0px;padding-right: 20px;padding-bottom: 0px;padding-left: 20px;column-count: 1;">
+        <div class="col-8 text-nowrap col">
+            <p>نام خریدار : @_invoiceDto.CustomerName</p>
+            <p>موبایل خریدار : @_invoiceDto.CustomerPhoneNumber</p>
+            <p>تاریخ ثبت : @_invoiceDto.EnterDateTime</p>
+        </div>
+        <div class="col-4 text-nowrap col">
+            <p>نام فروشنده : @_invoiceDto.ShopName</p>
+            <p>تلفن&nbsp;فروشنده : @_invoiceDto.PhoneNumber</p>
+            <p>شماره فاکتور : @_invoiceDto.InvoiceId</p>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive text-nowrap">
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>نام کالا</th>
+                            <th>قیمت</th>
+                            <th>تعداد</th>
+                            <th class="sm-hide">فی</th>
+                            <th class="sm-hide">تخفیف</th>
+                            <th>فی نهایی</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in _invoiceDto.Items)
+                        {
+                            <tr>
+                                <td>@item.ProductName</td>
+                                <td>@item.Price</td>
+                                <td>@item.Count</td>
+                                <td class="sm-hide">@item.RawFee</td>
+                                <td class="sm-hide">@item.DiscountFee</td>
+                                <td>@item.FinalFee</td>
+                            </tr>
+                        }
+
+                        <tr class="table-light border-less">
+                            <td colspan="2">مبلغ</td>
+                            <td class="table-light" colspan="2">@_invoiceDto.RawCost</td>
+                        </tr>
+                        <tr class="table-light border-less">
+                            <td colspan="2">تخفیف</td>
+                            <td colspan="2">@_invoiceDto.DiscountFee</td>
+                        </tr>
+                        <tr class="table-light border-less">
+                            <td colspan="2">مبلغ نهایی</td>
+                            <td colspan="2">@_invoiceDto.FinalCost</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col text-center">
+            <p>مهر و امضا خریدار</p>
+        </div>
+        <div class="col text-center">
+            <p>مهر و امضا فروشنده</p>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public string invoiceId { get; set; }
+
+    private InvoiceDto _invoiceDto { set; get; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _invoiceDto = new InvoiceDto()
+        {
+            CustomerName = "شیخ",
+            DiscountFee = 10 ,
+            FinalCost = 15,
+            ShopName = "بابک",
+            RawCost = 100,
+            DiscountRate = 20,
+            EnterDateTime = DateTime.Now,
+            CustomerPhoneNumber = "09013231042",
+            InvoiceId = 50,
+            PhoneNumber = "02534223808",
+            Items = new List<InvoiceItemDto>()
+            {
+                new()
+                {
+                    DiscountFee = 1000000000,
+                    RawFee = 4000000000,
+                    DiscountRate = 1000000000,
+                    Count = 56000000000,
+                    FinalFee = 400000000000,
+                    ProductCode = "52dsf",
+                    Price = 52200000000,
+                    ProductName = "خیار"
+                },
+                
+                new()
+                {
+                    DiscountFee = 10,
+                    RawFee = 40,
+                    DiscountRate = 10,
+                    Count = 56,
+                    FinalFee = 4000,
+                    ProductCode = "52dsf",
+                    Price = 522,
+                    ProductName = "هویج"
+                },
+            }
+        };
+    }
+
+}

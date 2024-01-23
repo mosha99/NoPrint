@@ -1,0 +1,144 @@
+﻿@page "/"
+@page "/invoices"
+@using NoPrint.Application.Dto
+
+@rendermode InteractiveWebAssembly
+
+@inject NavigationManager NavigationManager
+
+
+
+<div class="container-fluid" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col">
+            <RadzenButton Click="Show" Disabled="selectedInvoices?.Count != 1" ButtonStyle="ButtonStyle.Dark">مشاهده</RadzenButton>
+        </div>
+    </div>
+    <div class="row" style="margin-top:25px">
+        <div class="col">
+            <RadzenFieldset AllowCollapse="true" ExpandTitle="Expand orders." CollapseTitle="Collapse orders."
+                            ExpandAriaLabel="Expand the list of orders." CollapseAriaLabel="Collapse the list of orders."
+                            Expand=@(() => Change("Fieldset expanded")) Collapse=@(() => Change("Fieldset collapsed"))>
+                <HeaderTemplate>
+                    <span style="margin-right:10px">فیلتر</span>
+                </HeaderTemplate>
+
+                <ChildContent>
+
+                </ChildContent>
+            </RadzenFieldset>
+        </div>
+    </div>
+    <div class="row" id="data-tab" style="margin-top:25px;">
+        <div style="display: inline-grid;">
+
+            <RadzenDataGrid @ref="grid"
+                            @bind-Value=@selectedInvoices
+                            SelectionMode="DataGridSelectionMode.Single"
+                            KeyProperty="InvoiceId"
+                            IsLoading="@isLoading"
+                            Count="@count"
+                            Data="@Invoices"
+                            LoadData="@LoadData"
+                            AllowSorting="true"
+                            AllowFiltering="false"
+                            AllowPaging="true"
+                            PageSize="10"
+                            PagerHorizontalAlign="HorizontalAlign.Center"
+                            TItem="InvoiceDto"
+                            ColumnWidth="200px">
+
+                <Columns>
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="InvoiceId" Title="#" Width="60px" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="ShopName" Title="نام فروشگاه" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="PhoneNumber" Title="تلفن فروشگاه" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="CustomerName" Title="نام مشتری" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="CustomerPhoneNumber" Title="موبایل مشتری" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="RawCost" Title="مبلغ" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="DiscountFee" Title="تخفیف" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="FinalCost" Title="مبلغ خالص" />
+
+                </Columns>
+                <LoadingTemplate>
+                    <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Primary" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+                </LoadingTemplate>
+            </RadzenDataGrid>
+        </div>
+    </div>
+</div>
+<style>
+    .rz-column-title {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+@code {
+
+    List<InvoiceDto> Invoices;
+    RadzenDataGrid<InvoiceDto> grid;
+    IList<InvoiceDto> selectedInvoices;
+
+    int count;
+    bool isLoading;
+
+    void Change(string text)
+    {
+        Console.WriteLine($"{text}");
+    }
+
+    private Task LoadData(LoadDataArgs arg)
+    {
+        count = 110;
+        Invoices = new List<InvoiceDto>()
+        {
+            new()
+            {
+                CustomerName = "شیخشیخشیخشیخشیخشیخشیخشیخشیخشیخشیخشیخشیخشیخشیخشیخ",
+                DiscountFee = 10 ,
+                FinalCost = 15,
+                ShopName = "بابک",
+                RawCost = 100,
+                DiscountRate = 20,
+                EnterDateTime = DateTime.Now,
+                CustomerPhoneNumber = "09013231042",
+                InvoiceId = 50,
+                PhoneNumber = "02534223808",
+                Items = new List<InvoiceItemDto>()
+                {
+                    new()
+                    {
+                        DiscountFee = 1000000000,
+                        RawFee = 4000000000,
+                        DiscountRate = 1000000000,
+                        Count = 56000000000,
+                        FinalFee = 400000000000,
+                        ProductCode = "52dsf",
+                        Price = 52200000000,
+                        ProductName = "خیار"
+                    },
+
+                    new()
+                    {
+                        DiscountFee = 10,
+                        RawFee = 40,
+                        DiscountRate = 10,
+                        Count = 56,
+                        FinalFee = 4000,
+                        ProductCode = "52dsf",
+                        Price = 522,
+                        ProductName = "هویج"
+                    },
+                }
+            }
+        };
+
+        return Task.CompletedTask;
+    }
+
+
+    private void Show()
+    {
+        NavigationManager.NavigateTo($"/viewInvoice/{selectedInvoices[0].InvoiceId}");
+    }
+
+}
