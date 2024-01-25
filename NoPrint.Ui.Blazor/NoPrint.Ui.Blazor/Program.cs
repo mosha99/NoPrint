@@ -1,5 +1,6 @@
 using NoPrint.Ui.Blazor.Client.Pages;
 using NoPrint.Ui.Blazor.Components;
+using NoPrint.Ui.Blazor.Tools;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddTransient<IAuthService, AuthService>();
+
 
 var app = builder.Build();
 

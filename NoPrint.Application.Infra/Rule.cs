@@ -1,5 +1,5 @@
 ﻿namespace NoPrint.Application.Infra;
-
+[Flags]
 public enum Rule
 {
     Customer_Visitor,

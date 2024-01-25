@@ -1,0 +1,34 @@
+﻿@page "/login"
+@rendermode InteractiveWebAssembly
+
+
+<div class="container-fluid d-flex justify-content-center align-items-center" style="flex-direction:column ;height: 100%;position: fixed;border-radius: 113px;">
+    @if (_loginTypeEnum is null)
+    {
+        <div style="display:flex;flex-direction:row;">
+            <LoginType LoginTypeSelect="t => _loginTypeEnum = t" />
+        </div>
+    }
+    else if (_loginTypeEnum == LoginTypeEnum.Customer)
+    {
+        <LoginForCustomer/>
+    }
+    else
+    {
+        <LoginForShop/>
+    }
+
+    @if (_loginTypeEnum is not null)
+    {
+        <RadzenButton Click="() =>_loginTypeEnum = null " Style="background-color: initial; color:rgb(33,37,41)">بازگشت</RadzenButton>
+
+    }
+
+</div>
+ 
+
+@code {
+    LoginTypeEnum? _loginTypeEnum;
+    
+
+}

@@ -1,0 +1,42 @@
+﻿@using System.Reflection
+@using NoPrint.Application.Infra
+@using NoPrint.Ui.Blazor.Tools
+@using NoPrint.Ui.Blazor.Client.Pages.Login
+@using NoPrint.Ui.Blazor.Client.Pages
+
+@inject IAuthService AuthService;
+
+@if (islogin && access)
+{
+    <RouteView RouteData="RouteData" DefaultLayout="typeof(Layout.MainLayout)" />
+    <FocusOnNavigate RouteData="RouteData" Selector="h1" />
+}
+else if(!islogin)
+{
+    <Login/>
+}else
+{
+    <AccessDenied/>
+}
+
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public RouteData RouteData { get; set; }
+
+    private bool access;
+    private bool islogin;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var loginRule = await AuthService.GetLoginRule() ?? Rule.NonAuthorize;
+
+        islogin = loginRule != Rule.NonAuthorize;
+
+        var accessAttribute = RouteData.PageType.GetCustomAttribute<PageAccessAttribute>();
+
+        access = accessAttribute?.HasAccess(loginRule) ?? true;
+    }
+
+}

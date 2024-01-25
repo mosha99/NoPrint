@@ -1,0 +1,21 @@
+﻿@rendermode InteractiveWebAssembly
+
+<div class="d-flex flex-column" style="padding: 50px;background: rgb(33,37,41);border-radius: 8px;width: 309px;margin: 40px;">
+    <RadzenButton Click="() => Select(LoginTypeEnum.Customer)" ButtonStyle="ButtonStyle.Light" Style="margin: 25px;">ورود به عنوان مشتری</RadzenButton>
+</div>
+<div class="d-flex flex-column" style="padding: 50px;border-radius: 8px;width: 309px;margin: 40px;background: rgba(0,0,0,0.1);">
+    <RadzenButton Click="() => Select(LoginTypeEnum.Shop)" ButtonStyle="ButtonStyle.Dark" Style="margin: 25px;">ورود به عنوان فروشنده</RadzenButton>
+</div>
+
+@code {
+
+
+    [Parameter]
+    public EventCallback<LoginTypeEnum> LoginTypeSelect { set; get; }
+
+    private async Task Select(LoginTypeEnum typeEnum)
+    {
+        await LoginTypeSelect.InvokeAsync(typeEnum);
+    }
+
+}

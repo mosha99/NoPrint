@@ -1,5 +1,5 @@
-﻿@page "/"
-@page "/invoices"
+﻿@page "/invoices"
+@page "/"
 @using NoPrint.Application.Dto
 
 @rendermode InteractiveWebAssembly
@@ -46,17 +46,17 @@
                             PageSize="10"
                             PagerHorizontalAlign="HorizontalAlign.Center"
                             TItem="InvoiceDto"
-                            ColumnWidth="200px">
+                            >
 
                 <Columns>
-                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="InvoiceId" Title="#" Width="60px" />
-                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="ShopName" Title="نام فروشگاه" />
-                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="PhoneNumber" Title="تلفن فروشگاه" />
-                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="CustomerName" Title="نام مشتری" />
-                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="CustomerPhoneNumber" Title="موبایل مشتری" />
-                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="RawCost" Title="مبلغ" />
-                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="DiscountFee" Title="تخفیف" />
-                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto"  Property="FinalCost" Title="مبلغ خالص" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto" Width="200px" Property="InvoiceId" Title="#" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto" Width="200px" Property="ShopName" Title="نام فروشگاه" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto" Width="200px" Property="CustomerNumber" Title="تلفن فروشگاه" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto" Width="200px" Property="CustomerName" Title="نام مشتری" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto" Width="200px" Property="CustomerCustomerNumber" Title="موبایل مشتری" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto" Width="200px" Property="RawCost" Title="مبلغ" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto" Width="200px" Property="DiscountFee" Title="تخفیف" />
+                    <RadzenDataGridColumn Filterable="false" TItem="InvoiceDto" Width="200px" Property="FinalCost" Title="مبلغ خالص" />
 
                 </Columns>
                 <LoadingTemplate>
@@ -94,14 +94,14 @@
             new()
             {
                 CustomerName = "شیخشیخشیخشیخشیخشیخشیخشیخشیخشیخشیخشیخشیخشیخشیخشیخ",
-                DiscountFee = 10 ,
-                FinalCost = 15,
+                DiscountFee = 100000 ,
+                FinalCost = 1500000000,
                 ShopName = "بابک",
-                RawCost = 100,
-                DiscountRate = 20,
+                RawCost = 1000000000,
+                DiscountRate = 20000000000,
                 EnterDateTime = DateTime.Now,
                 CustomerPhoneNumber = "09013231042",
-                InvoiceId = 50,
+                InvoiceId = 500000000,
                 PhoneNumber = "02534223808",
                 Items = new List<InvoiceItemDto>()
                 {

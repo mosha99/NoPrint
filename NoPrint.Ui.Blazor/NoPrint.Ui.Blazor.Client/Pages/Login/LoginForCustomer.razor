@@ -1,0 +1,25 @@
+﻿@inject NavigationManager NavigationManager;
+
+@if (loginMethod is LoginMethod.Phone)
+{
+    <LoginByPhone />
+    <RadzenButton Click="() =>loginMethod = LoginMethod.Username " Style="background-color: initial; color:rgb(33,37,41)">ورود با گذرواژه</RadzenButton>
+}
+else
+{
+    <LoginByUserNameAndPassword LoginTypeEnum="LoginTypeEnum.Shop"/>
+    <RadzenButton Click="() =>loginMethod = LoginMethod.Phone " Style="background-color: initial; color:rgb(33,37,41)">ورود با موبایل</RadzenButton>
+}
+
+
+@code {
+
+
+    enum LoginMethod
+    {
+        Phone,
+        Username
+    }
+
+    LoginMethod loginMethod = LoginMethod.Username;
+}

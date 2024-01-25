@@ -73,7 +73,12 @@ h1:focus {
     font-weight: 500;
     font-family: vazir;
 }
-
+.rz-form-field-label {
+    width: fit-content;
+    right: 0 !important;
+    text-align: right;
+    margin-right: 5px;
+}
 .rz-paginator-icon {
     transform: rotate(180deg) !important;
 }
